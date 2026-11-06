@@ -1,0 +1,64 @@
+.journey { position: relative; color: var(--cream); }
+.wrap { position: relative; }
+
+/* Default: four stages, stacked. This is also the reduced-motion and phone layout. */
+.track { list-style: none; margin: 0 auto; padding: 1rem var(--pad) 0; max-width: 86rem; display: grid; gap: 4rem; }
+.panel { display: grid; gap: 1.6rem; align-items: center; padding-top: 2rem; border-top: 1px solid #ffffff33; }
+.word { font-size: clamp(3.4rem, 14vw, 5.5rem); font-weight: 500; letter-spacing: -.055em; line-height: .98; }
+.word span { background: linear-gradient(var(--sun), var(--sun)) no-repeat 0 94% / 100% .09em; padding-bottom: .06em; transition: background-size .9s cubic-bezier(.16, 1, .3, 1); }
+.blurb { margin-top: 1.1rem; max-width: 24rem; font-size: 1.1rem; line-height: 1.55; color: #e3ddf5; }
+.visual { margin: 0; min-width: 0; }
+.visual figcaption { margin-top: .8rem; max-width: 30rem; font-size: .8rem; line-height: 1.5; color: #c8d1bd; }
+.shot { background: #0d1410; border: 1px solid #ffffff2e; }
+.shot img { display: block; width: 100%; height: auto; }
+.paper { background: var(--cream); color: var(--forest); padding: 1.4rem 1.5rem 1.5rem; }
+.paperLabel { font-size: .74rem; line-height: 1.4; }
+.paperBig { margin: .8rem 0 .6rem; font-family: var(--f-head); font-size: 1.35rem; line-height: 1.2; letter-spacing: -.03em; }
+.paperBig strong { font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; margin-right: .2em; }
+.paper :global(.dg-hi) { stroke: var(--forest); }
+.event { display: inline-block; margin: .9rem 0 1rem; padding: .35rem .7rem; background: var(--forest); color: var(--sun); font-size: 1.1rem; }
+.flow { display: grid; justify-items: start; gap: .25rem; font-size: .9rem; }
+.flow strong { font-family: var(--f-head); font-size: 1.6rem; font-weight: 500; letter-spacing: -.03em; box-shadow: inset 0 -.3em var(--sun); }
+.rail, .glyph { display: none; }
+
+@media (min-width: 52rem) {
+  .track { gap: 5rem; }
+  .panel { grid-template-columns: 1fr 1fr; gap: 2.4rem; padding-top: 3rem; }
+  .word { font-size: clamp(4rem, 7vw, 6.5rem); }
+}
+
+/* Pinned: the stages travel sideways while the section holds still. JS sets data-pinned. */
+.wrap[data-pinned="true"] { height: 88dvh; min-height: 34rem; overflow: hidden; display: flex; align-items: center; }
+.wrap[data-pinned="true"] .track { display: flex; gap: 0; width: 100%; max-width: none; margin: 0; padding: 0; will-change: transform; }
+.wrap[data-pinned="true"] .panel { flex: 0 0 100%; min-width: 0; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: clamp(2rem, 6vw, 6rem); padding: 3rem max(var(--pad), calc((100% - 86rem) / 2 + var(--pad))) 6rem; border-top: 0; }
+.wrap[data-pinned="true"] .word { font-size: clamp(3.6rem, 8.6vw, 8.4rem); }
+.wrap[data-pinned="true"] .blurb { font-size: 1.2rem; max-width: 26rem; }
+.wrap[data-pinned="true"] .copy, .wrap[data-pinned="true"] .visual { opacity: .2; transition: opacity .7s ease; }
+.wrap[data-pinned="true"] .on .copy, .wrap[data-pinned="true"] .on .visual { opacity: 1; }
+.wrap[data-pinned="true"] .word span { background-size: 0% .09em; }
+.wrap[data-pinned="true"] .on .word span { background-size: 100% .09em; transition-delay: .25s; }
+
+.wrap[data-pinned="true"] .rail { display: block; position: absolute; left: max(var(--pad), calc((100% - 86rem) / 2 + var(--pad))); right: max(var(--pad), calc((100% - 86rem) / 2 + var(--pad))); bottom: 2.6rem; }
+.railTrack { position: relative; height: 2px; margin-inline: 5rem; background: #ffffff33; }
+.railFill { position: absolute; inset: 0; background: var(--sun); transform: scaleX(0); transform-origin: 0 50%; }
+.stop { position: absolute; top: 50%; width: .85rem; height: .85rem; border-radius: 50%; background: var(--forest); border: 2px solid #ffffff66; transform: translate(-50%, -50%); transition: background-color .3s, border-color .3s; }
+.stop em { position: absolute; top: 1.3rem; left: 50%; transform: translateX(-50%); white-space: nowrap; font-style: normal; font-size: .82rem; color: #aeb9a3; transition: color .3s; }
+.reached { background: var(--sun); border-color: var(--sun); }
+.reached em { color: var(--cream); }
+
+.wrap[data-pinned="true"] .glyph { display: block; position: absolute; top: 5.4rem; right: max(var(--pad), calc((100% - 86rem) / 2 + var(--pad))); width: clamp(3rem, 5vw, 4.5rem); height: auto; pointer-events: none; }
+.glyph path { fill: var(--sun); }
+
+/* Pinned on a phone: the same sideways walk, each stage stacked inside its own screen. */
+@media (max-width: 51.99rem) {
+  .wrap[data-pinned="true"] { height: 100svh; min-height: 0; }
+  .wrap[data-pinned="true"] .panel { grid-template-columns: minmax(0, 1fr); align-content: center; gap: 1.3rem; padding: 5rem var(--pad) 6.5rem; }
+  .wrap[data-pinned="true"] .word { font-size: clamp(2.8rem, 14vw, 4.2rem); }
+  .wrap[data-pinned="true"] .blurb { margin-top: .6rem; font-size: 1rem; }
+  .wrap[data-pinned="true"] .visual figcaption { font-size: .74rem; }
+  .wrap[data-pinned="true"] .paper { padding: 1rem 1.1rem 1.1rem; }
+  .wrap[data-pinned="true"] .rail { bottom: 2.2rem; }
+  .wrap[data-pinned="true"] .railTrack { margin-inline: 1.4rem; }
+  .wrap[data-pinned="true"] .stop em { font-size: .68rem; }
+  .wrap[data-pinned="true"] .glyph { top: 4.4rem; width: 2.4rem; }
+}

@@ -1,0 +1,56 @@
+/* The session replay, inside the deep violet contact panel. */
+
+.replay {
+  width: 100%;
+  margin-block: 1rem 1.5rem;
+  padding: clamp(1rem, 2.4vw, 1.6rem);
+  border: 1px solid color-mix(in srgb, var(--cream) 18%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, #0d0830 35%, transparent);
+}
+
+.head { display: grid; gap: 0.5rem; max-width: 46rem; }
+.head h3 { font-size: clamp(1.4rem, 2.6vw, 2rem); font-weight: 500; letter-spacing: -0.02em; color: var(--cream); }
+.head p { font-size: 0.95rem; line-height: 1.6; color: color-mix(in srgb, var(--cream) 72%, transparent); }
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: clamp(9rem, 18vw, 13rem);
+  margin-top: 1.2rem;
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--cream) 4%, transparent);
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-top: 1rem;
+}
+.stats { display: flex; flex-wrap: wrap; gap: 0.6rem 2.2rem; margin: 0; }
+.stats dt { font-size: 0.75rem; color: color-mix(in srgb, var(--cream) 62%, transparent); }
+.stats dd { margin: 0.1rem 0 0; font-family: var(--f-head); font-size: 1.5rem; font-variant-numeric: tabular-nums; color: var(--sun); }
+.empty { font-size: 0.9rem; color: color-mix(in srgb, var(--cream) 72%, transparent); }
+
+.again {
+  min-height: 2.9rem;
+  padding: 0 1.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sun);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.again:hover { transform: translateY(-2px); background: #d6b46c; }
+.again:active { transform: scale(0.98); }
+.again:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .again { transition: none; }
+}

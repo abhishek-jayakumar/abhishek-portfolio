@@ -1,0 +1,70 @@
+.approachInner { max-width: 86rem; margin-inline: auto; padding-inline: var(--pad); }
+.caption { font-size: .8rem; line-height: 1.5; }
+.action { display: inline-flex; gap: 1.5rem; align-items: center; min-height: 44px; font-weight: 650; font-size: .95rem; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; }
+.action span { font-size: 1.4rem; }
+.action:hover { text-decoration-thickness: 3px; }
+
+.approach { background: var(--forest); color: var(--cream); padding-block: clamp(4rem, 9vw, 7rem) 3.5rem; }
+.approach :focus-visible { outline-color: var(--sun); }
+.approach .caption { color: #d9d2f0; }
+.approachIntro { margin-bottom: clamp(1rem, 2vw, 2rem); display: grid; grid-template-columns: .45fr 1fr .8fr; gap: 2.5rem; align-items: start; }
+.approachIntro h2 { font-size: clamp(2.8rem, 5.6vw, 5.4rem); font-weight: 500; letter-spacing: -.045em; }
+.approachIntro > p:last-child { max-width: 28rem; font-size: 1rem; line-height: 1.7; color: #e3ddf5; }
+.investigationDisclosure { margin-top: 2.5rem; border-top: 1px solid #ffffff55; border-bottom: 1px solid #ffffff55; }
+.investigationDisclosure > summary { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; gap: 1rem; cursor: pointer; list-style: none; font-size: .95rem; font-weight: 600; }
+.investigationDisclosure > summary:hover { color: var(--sun); }
+.investigationDisclosure > summary::-webkit-details-marker { display: none; }
+.investigationDisclosure > summary > span:last-child { font-size: 1.5rem; }
+.investigationDisclosure[open] > summary > span:last-child { transform: rotate(45deg); }
+.investigationDisclosure > div { padding: 2rem; }
+.investigationDisclosure > div::before { display: none; }
+.investigationIntro { max-width: 43rem; font-size: .9rem; }
+
+/* Existing sections remain available below the review set. Keep their layout usable. */
+.continuation :global(.lab-inner), .continuation :global(.zero-inner) { max-width: 86rem; margin: auto; padding: 3rem var(--pad); }
+.continuation :global(.labwrap) { background: #efeaf9; }
+.continuation :global(.lab-lede) { max-width: 44rem; margin-bottom: 2rem; }
+.continuation :global(.lab) { display: grid; grid-template-columns: .65fr 1.4fr; gap: 3rem; }
+.continuation :global(.lab-index) { display: flex; flex-direction: column; align-items: stretch; }
+.continuation :global(.lab-tab) { display: flex; gap: .7rem; text-align: left; background: transparent; border: 0; border-top: 1px solid #2a1b6655; padding: 1rem 0; font: inherit; font-size: .95rem; color: var(--ink); cursor: pointer; }
+.continuation :global(.lab-tab[aria-selected="true"]) { border-top: 3px solid var(--forest); }
+.continuation :global(.lab-tab-text small) { display: block; font-size: .78rem; line-height: 1.5; margin-top: .4rem; }
+.continuation :global(.lab-no) { font-size: .7rem; }
+.continuation :global(.lab-queue) { margin-top: 2rem; font-size: .8rem; }
+.continuation :global(.lab-queue ul) { padding-left: 1.2rem; }
+.continuation :global(.lab-queue li) { margin-top: .6rem; }
+.continuation :global(.lab-meta) { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .72rem; margin-bottom: 1rem; }
+.continuation :global(.lab-bench) { min-width: 0; }
+.continuation :global(.lab-bench:has(.dial)) { background: var(--forest); color: var(--cream); padding: 1.4rem; }
+.continuation :global(.lab-bench:has(.dial) h3) { color: var(--cream); }
+.continuation :global(.lab-bench h3) { font-size: 1.8rem; }
+.continuation :global(.lab-from) { font-size: .8rem; margin-top: .7rem; }
+.continuation :global(.leak-controls) { display: grid; gap: 1rem; margin-block: 1.5rem; }
+.continuation :global(.leak-row label) { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; font-size: .85rem; }
+.continuation :global(.leak-row input) { width: 100%; accent-color: var(--forest); }
+.continuation :global(.leak-bars), .continuation :global(.leak-levers ul) { list-style: none; padding: 0; font-size: .8rem; }
+.continuation :global(.leak-bars li), .continuation :global(.leak-levers li) { display: grid; grid-template-columns: 6rem 1fr 3rem; align-items: center; gap: .7rem; margin-block: .6rem; }
+.continuation :global(.leak-bars i), .continuation :global(.leak-levers i) { height: 8px; display: block; background: var(--forest); }
+.continuation :global(.leak-levers .best i) { background: var(--clay-ink); }
+.continuation :global(.leak-label), .continuation :global(.leak-note) { font-size: .75rem; margin-top: 1rem; }
+.continuation :global(.leak-read) { font-size: .9rem; margin-top: 1.2rem; }
+.continuation :global(.about-photo img) { border: 0; box-shadow: none; border-radius: 0; transform: none; }
+.continuation :global(.contact) { border: 0; border-radius: 0; box-shadow: none; }
+.continuation :global(.doors) { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.continuation :global(.door) { display: flex; flex-direction: column; gap: .6rem; padding-top: 1.2rem; border-top: 1px solid var(--ink); font-size: .9rem; text-decoration: none; }
+.continuation :global(.door em) { font-size: .8rem; text-decoration: underline; font-style: normal; }
+.sessionDisclosure { border-top: 1px solid #2a1b6655; margin-top: 2.5rem; padding-top: 1rem; font-size: .9rem; }
+.sessionDisclosure summary { cursor: pointer; padding-block: .5rem; }
+.sessionDisclosure :global(.slog-stats) { display: flex; gap: 2rem; flex-wrap: wrap; }
+.sessionDisclosure :global(.slog-stats dd) { margin: 0; font-family: var(--f-head); font-size: 2rem; }
+.sessionDisclosure :global(.slog-feed) { padding-left: 1.4rem; font-size: .8rem; }
+.sessionDisclosure :global(.slog-feed li) { margin-block: .5rem; }
+.sessionDisclosure :global(.slog-feed span) { margin-left: 1rem; }
+.sessionDisclosure > p { max-width: 40rem; font-size: .8rem; }
+
+@media (max-width: 700px) {
+  .investigationDisclosure > div { padding: 1rem; margin-inline: -.4rem; }
+  .continuation :global(.lab) { grid-template-columns: 1fr; gap: 2rem; }
+  .continuation :global(.doors) { grid-template-columns: 1fr; }
+}
+

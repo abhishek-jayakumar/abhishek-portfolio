@@ -1,0 +1,51 @@
+/** Excerpts from existing case-study copy. Hypotheses are explicitly separate. */
+export const INVESTIGATION = [
+  {
+    label: "Ad", question: "Did the right person notice?", title: "A capacity problem, written in dots.",
+    status: "Real work · campaign evidence", source: "Cybersecurity education acquisition campaign",
+    changed: "I planned the Meta campaign around audience targeting, messaging and creative, and watched lead quality alongside volume.",
+    evidence: "The existing campaign record reports 1,000+ leads and 50 conversions for 50 seats. It does not include a verified lead-quality breakdown.",
+    learned: "Capacity changes the question. More enquiries alone cannot tell me whether the campaign reached the right people.",
+    slug: "cscp", artifact: "campaign",
+  },
+  {
+    label: "Landing page", question: "Did the page keep the promise?", title: "Make the next step easy to find.",
+    status: "Real work · website capture", source: "An architecture studio’s enquiry journey",
+    changed: "I built a first site around a consultation offer, then rebuilt the experience with a form, WhatsApp and a qualifying chat.",
+    evidence: "The earlier site’s reporting records 15+ leads in its first 30 days without ad spend. Results for the rebuild are not available here.",
+    learned: "A page has to connect what someone came for with something they can actually do next.",
+    slug: "burl-concepts", artifact: "website",
+  },
+  {
+    label: "Experience", question: "Have we earned the next question?", title: "A useful answer before an enquiry.",
+    status: "Real work · reconstructed question excerpt", source: "Cybersecurity career discovery experience",
+    changed: "I helped build a 15-question career discovery experience and set up measurement across the journey to a personalised result.",
+    evidence: "The build scores five dimensions and suggests one of six profiles. Completion-rate and conversion-uplift figures are not available.",
+    learned: "A quiz gives the visitor something useful. Whether that also improves conversion is a separate question to measure.",
+    slug: "career-discovery", artifact: "quiz",
+  },
+  {
+    label: "Lead", question: "Did an enquiry actually arrive?", title: "The event is not the outcome.",
+    status: "Real work · implementation review", source: "Website measurement and lead capture",
+    changed: "I added event tracking across the site’s enquiry paths. Reviewing the build also exposed a gap: the form event does not confirm server acceptance.",
+    evidence: "Thirteen event types are implemented. A submission event alone is not proof of a saved lead; the confirmation fix remains a proposed next step.",
+    learned: "Before optimising a conversion count, check what causes it to increment.",
+    slug: "burl-concepts", artifact: "event",
+  },
+  {
+    label: "Sales", question: "Can someone act on this lead?", title: "Leave the next person a useful handover.",
+    status: "Proposed investigation · no sales outcome claimed", source: "A question raised by the lead-qualification build",
+    changed: "The existing chat collects project type, budget, timeline and location. Connecting that context to a confirmed sales outcome is the next investigation, not a completed result.",
+    evidence: "The qualification flow exists. I do not have response-time, opportunity or close-rate evidence for it here.",
+    learned: "A useful record is a starting point. To judge the handover, I would need to follow what the team does with it.",
+    slug: "burl-concepts", artifact: "handover",
+  },
+  {
+    label: "Customer", question: "Did the promise hold up?", title: "This is where my evidence runs out.",
+    status: "Open question · proposed research", source: "The next measurement loop",
+    changed: "No customer-outcome change is claimed here. I would connect acquisition context to customer feedback before deciding which message to repeat.",
+    evidence: "There is no linked retention, satisfaction or lifetime-value dataset in this portfolio.",
+    learned: "A conversion cannot answer whether the experience was worth it. That needs another conversation and another source of evidence.",
+    slug: null, artifact: "question",
+  },
+] as const;

@@ -1,0 +1,279 @@
+/* The hero: a search, a click, and a landing page written for this visitor.
+   Ivory ground with a faint heat grid, deep violet type, one brass line. Without the script,
+   only the landing page shows, as plain markup. */
+
+.hero {
+  --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  align-content: center;
+  min-height: 100svh;
+  padding: 6rem var(--pad) 3.5rem;
+  background:
+    radial-gradient(60rem 34rem at 82% 6%, color-mix(in srgb, var(--violet) 7%, transparent), transparent 70%),
+    var(--cream);
+  color: var(--ink);
+  touch-action: pan-y;
+}
+
+.canvas,
+.ink {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.canvas { z-index: -2; }
+.ink { z-index: -1; overflow: visible; }
+
+.thread {
+  fill: none;
+  stroke: var(--sun);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.traceText {
+  fill: none;
+  stroke: var(--violet);
+  stroke-width: 1.1;
+  stroke-dasharray: 2400;
+  stroke-dashoffset: 2400;
+}
+
+/* Search and landing share one cell, so the hero never changes height between them. */
+.stage {
+  display: grid;
+  width: 100%;
+  max-width: 86rem;
+  margin-inline: auto;
+}
+.stage > * { grid-area: 1 / 1; min-width: 0; }
+
+/* ---- Beat 1: the search ------------------------------------------------------------------ */
+.search {
+  display: none;
+  align-self: center;
+  justify-self: start;
+  width: min(100%, 40rem);
+  padding: 1rem 1rem 0.6rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  box-shadow: var(--lift);
+}
+.hero[data-stage="search"] .search { display: block; }
+.hero[data-stage="search"] .landing { visibility: hidden; }
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  min-height: 3.2rem;
+  padding: 0 1.2rem 0 2.6rem;
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--cream);
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+/* A plain search mark: a ring and a short handle, drawn in CSS. */
+.bar::before,
+.bar::after {
+  content: "";
+  position: absolute;
+  left: 1.1rem;
+  top: 50%;
+}
+.bar::before { width: 0.7rem; height: 0.7rem; margin-top: -0.45rem; border: 2px solid var(--muted); border-radius: 50%; }
+.bar::after { width: 0.4rem; height: 2px; margin: 0.32rem 0 0 0.62rem; background: var(--muted); transform: rotate(45deg); transform-origin: 0 50%; }
+
+.query { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.caret { width: 2px; height: 1.25em; background: var(--violet); animation: caret 1s steps(1) infinite; }
+@keyframes caret { 50% { opacity: 0; } }
+
+.results { list-style: none; display: grid; gap: 0.2rem; margin: 0.9rem 0 0; padding: 0; }
+.results li { display: grid; gap: 0.15rem; padding: 0.75rem 0.85rem; border-radius: 0.75rem; }
+.ad { opacity: 0.66; }
+.adTag { font-size: 0.72rem; font-weight: 750; color: var(--ink); }
+.crumb { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+.resTitle,
+.resLink { font-size: 1.12rem; font-weight: 600; line-height: 1.3; color: var(--violet); }
+.resLink {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.resLink:hover { text-decoration: underline; text-underline-offset: 4px; }
+.resLink:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; border-radius: 0.25rem; }
+.snip { font-size: 0.92rem; line-height: 1.5; color: var(--muted); }
+.hit { transform-origin: 50% 50%; }
+
+.skip {
+  min-height: 44px;
+  margin-left: 0.85rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+/* After the click, wide screens keep the search docked on the right: how the visitor got here. */
+.dockLabel { display: none; }
+@media (min-width: 75rem) {
+  .hero[data-docked] .search {
+    display: block;
+    justify-self: end;
+    align-self: start;
+    width: min(24rem, 28vw);
+    margin-top: 1.2rem;
+    padding: 0.85rem 0.8rem 0.5rem;
+    box-shadow: var(--lift-sm);
+  }
+  .hero[data-docked] .dockLabel {
+    display: block;
+    margin: 0 0 0.6rem 0.3rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+  .hero[data-docked] .ad,
+  .hero[data-docked] .skip,
+  .hero[data-docked] .caret { display: none; }
+  .hero[data-docked] .bar { min-height: 2.5rem; padding-left: 2.3rem; font-size: 0.86rem; }
+  .hero[data-docked] .bar::before { left: 0.95rem; }
+  .hero[data-docked] .bar::after { left: 0.95rem; }
+  .hero[data-docked] .query { white-space: normal; }
+  .hero[data-docked] .results { margin-top: 0.45rem; }
+  .hero[data-docked] .results li { padding: 0.6rem 0.65rem; }
+  .hero[data-docked] .resLink { font-size: 0.98rem; }
+  .hero[data-docked] .snip { font-size: 0.8rem; }
+}
+
+/* ---- Beat 3: the landing page ------------------------------------------------------------ */
+.landing { display: grid; justify-items: start; align-content: center; }
+
+.name {
+  margin: 0;
+  font-size: min(14vw, 24svh);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  color: var(--forest);
+  font-variation-settings: "SOFT" 0, "opsz" 144;
+}
+.name span { white-space: nowrap; }
+.name ::selection { color: var(--white); background: var(--violet); }
+
+.lede {
+  max-width: 36rem;
+  margin-top: 3.7rem;
+  font-family: var(--f-head);
+  font-size: clamp(1.3rem, 2.1vw, 1.75rem);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  font-variation-settings: "SOFT" 0;
+  color: var(--ink);
+}
+
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1.4rem; margin-top: 1.6rem; }
+.cta {
+  display: inline-flex;
+  gap: 0.8rem;
+  align-items: center;
+  min-height: 3.1rem;
+  padding: 0 1.6rem;
+  border-radius: 999px;
+  background: var(--violet);
+  color: var(--white);
+  font-weight: 650;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgb(42 27 102 / 0.2), 0 10px 24px -10px rgb(91 63 208 / 0.7);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.cta span { font-size: 1.15rem; color: var(--sun); }
+.cta:hover { background: var(--forest); transform: translateY(-2px); }
+.cta:active { transform: translateY(0) scale(0.98); }
+.cta:focus-visible { outline-color: var(--violet); }
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 650;
+  color: var(--forest);
+  text-decoration: underline;
+  text-decoration-color: var(--sun);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 7px;
+}
+.ghost:hover { text-decoration-thickness: 4px; }
+
+.note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 1.1rem;
+  margin-top: 1.1rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.note code {
+  padding: 0.1rem 0.45rem;
+  border-radius: 0.4rem;
+  background: var(--cream-2);
+  color: var(--forest);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+.note button {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 650;
+  color: var(--violet);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.note button:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+
+/* Until the script decides between the search and the landing page, hold the landing page back
+   (only when motion is welcome). If the script never runs, it arrives on its own. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero[data-intro="pending"] .landing {
+    opacity: 0;
+    animation: arrive 0.01s 3s forwards;
+  }
+}
+@keyframes arrive { to { opacity: 1; } }
+
+@media (max-width: 47.99rem) {
+  .hero { padding: 5.5rem var(--pad) 3rem; }
+  .name { font-size: min(17vw, 22svh); }
+  .lede { margin-top: 3.2rem; }
+  .search { padding: 0.8rem 0.6rem 0.4rem; }
+  .bar { font-size: 0.95rem; }
+  .query { white-space: normal; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret { animation: none; }
+  .replayButton { display: none; } /* the search only exists as motion */
+  .cta { transition: none; }
+}

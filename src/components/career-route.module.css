@@ -1,0 +1,224 @@
+/* The career route: a journey drawn over ledger paper. Default layout is a plain, fully
+   readable list; the map layout only applies where the script will also pin it. */
+
+.hero {
+  --hero-bg: var(--cream);
+  --hero-fg: var(--ink);
+  --hero-soft: color-mix(in srgb, var(--hero-fg) 62%, transparent);
+  --hero-rule: color-mix(in srgb, var(--hero-fg) 14%, transparent);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--hero-bg);
+  color: var(--hero-fg);
+  padding: 3.4rem var(--pad) 3rem max(var(--pad), calc(clamp(1.4rem, 5vw, 4.6rem) + 1.6rem));
+}
+
+/* ---- Paper ------------------------------------------------------------------------ */
+.paper { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.ledger, .dots { position: absolute; inset: 0; }
+.ledger {
+  background: repeating-linear-gradient(to bottom, transparent 0, transparent calc(2.2rem - 1px), var(--hero-rule) calc(2.2rem - 1px), var(--hero-rule) 2.2rem);
+}
+/* The double margin rule of an account book. */
+.ledger::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 clamp(1.4rem, 5vw, 4.6rem);
+  width: 5px;
+  border-inline: 1px solid color-mix(in srgb, var(--clay-ink) 55%, transparent);
+}
+.dots {
+  opacity: 0;
+  background: radial-gradient(circle, color-mix(in srgb, var(--hero-fg) 30%, transparent) 1.2px, transparent 1.7px) 0 0 / 1.7rem 1.7rem;
+}
+
+/* ---- Words ------------------------------------------------------------------------ */
+.stage { max-width: 86rem; margin-inline: auto; }
+.top { margin-bottom: 1.4rem; font-family: var(--f-hand); font-size: 1.6rem; line-height: 1; color: var(--stamp-ink, var(--clay-ink)); transform: rotate(-2deg); transform-origin: 0 50%; }
+.title { font-size: clamp(2.8rem, 10vw, 5.4rem); font-weight: 500; line-height: 1.04; letter-spacing: -.055em; }
+.stop :focus-visible { outline-color: var(--sun); }
+
+/* ---- The route as a list (default) ------------------------------------------------ */
+.field { margin-top: 2.4rem; }
+.road, .traveller, .hint, .readout, .stamp { display: none; }
+.listWrap { position: relative; }
+.fill {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: var(--sun); transform-origin: 50% 0;
+}
+.stops { list-style: none; margin: 0; padding: 0 0 0 1.5rem; display: grid; gap: 1.6rem; border-left: 2px solid var(--hero-rule); }
+.stop { position: relative; }
+.pin {
+  position: absolute; left: calc(-1.5rem - 8px); top: .35rem; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--hero-bg); border: 2px solid var(--hero-fg);
+  transition: background-color .3s ease, transform .3s ease;
+}
+.reached .pin { background: var(--sun); }
+.flight + .pin { top: 2.55rem; }
+.flight {
+  display: inline-flex; align-items: center; gap: .45rem; margin-bottom: .7rem; padding: .2rem .7rem .2rem .55rem;
+  border: 1.5px dashed color-mix(in srgb, var(--clay-ink) 70%, transparent); border-radius: 999px;
+  font-size: .78rem; font-weight: 600; color: var(--clay-ink);
+}
+.flight span { font-size: .95rem; }
+.kind { font-size: .78rem; color: var(--hero-soft); }
+.label h3 { font-size: 1.45rem; font-weight: 500; line-height: 1.15; letter-spacing: -.03em; margin: .1rem 0 .25rem; }
+.meta { font-size: .8rem; color: var(--hero-soft); }
+.line { margin-top: .5rem; max-width: 34rem; font-size: .95rem; line-height: 1.6; }
+
+/* ---- The route as a map (wide screens, motion welcome) ---------------------------- */
+@media (min-width: 62rem) and (prefers-reduced-motion: no-preference) {
+  .hero { height: 100dvh; min-height: 43rem; padding: 5.4rem 0 0; }
+  .stage { position: relative; height: 100%; padding-inline: var(--pad); }
+  .top { margin-bottom: .9rem; }
+  .title { font-size: clamp(3rem, 5.6vw, 5.8rem); max-width: 62%; }
+
+  .field { position: absolute; left: calc(var(--pad) + 2.2rem); right: calc(var(--pad) + 5.5rem); top: 42%; bottom: 9%; margin: 0; }
+  .road { display: block; position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .road path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .ride { stroke: none; }
+  .roadBase { stroke: color-mix(in srgb, var(--hero-fg) 30%, transparent); stroke-width: 2; }
+  .roadWalked { stroke: var(--sun); stroke-width: 6; }
+  /* Flights: a dotted arc; walked, its dots light up one by one behind the plane. */
+  .skyBase { stroke: color-mix(in srgb, var(--hero-fg) 38%, transparent); stroke-width: 2.5; stroke-dasharray: 0 9; }
+  .skyWalked circle { fill: var(--sun); opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(.3); transition: opacity .25s ease, transform .35s cubic-bezier(.2,1.6,.4,1); }
+  .skyWalked circle.lit { opacity: 1; transform: scale(1); }
+
+  .listWrap { position: absolute; inset: 0; }
+  .fill, .flight { display: none; }
+  .stops { position: absolute; inset: 0; display: block; margin: 0; padding: 0; border: 0; }
+  .stop { position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; }
+  .pin, .flight + .pin { left: -.6rem; top: -.6rem; width: 1.2rem; height: 1.2rem; }
+  .current .pin { box-shadow: 0 0 0 .5rem color-mix(in srgb, var(--sun) 38%, transparent); }
+  .label { position: absolute; left: -.6rem; width: 8.6rem; opacity: .38; transition: opacity .5s ease; }
+  .up .label { bottom: 1.35rem; }
+  .down .label { top: 1.35rem; }
+  .reached .label { opacity: 1; }
+  .flip .label { left: auto; right: -.6rem; text-align: right; }
+  .label h3 { font-size: 1.02rem; margin: 0; }
+  .kind { display: none; }
+  .meta { font-size: .72rem; margin-top: .15rem; }
+  .hero[data-pinned] .line { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* Passport stamps. */
+  .stamp {
+    display: grid; justify-items: center; gap: .05rem;
+    position: absolute; left: var(--x); top: var(--y); z-index: 0;
+    padding: .45rem .9rem .5rem;
+    border: 2.5px solid var(--stamp-ink, var(--clay-ink)); border-radius: .55rem;
+    outline: 1px solid var(--stamp-ink, var(--clay-ink)); outline-offset: 3px;
+    color: var(--stamp-ink, var(--clay-ink));
+    transform: translate(-50%, -50%) rotate(var(--tilt));
+    pointer-events: none;
+  }
+  .stamp strong { font-family: var(--f-head); font-size: 1.05rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.1; }
+  .stamp span { font-family: var(--f-hand); font-size: 1.05rem; line-height: 1; }
+
+  .traveller { display: block; position: absolute; left: 0; top: 0; width: 2rem; height: 2rem; z-index: 3; pointer-events: none; overflow: visible; }
+  .traveller path { fill: var(--sun); stroke: var(--hero-fg); stroke-width: 6; stroke-linejoin: round; }
+  .hint { display: block; position: absolute; left: 9.5%; top: 90%; font-family: var(--f-hand); font-size: 1.5rem; line-height: 1; color: var(--clay-ink); transform: rotate(-4deg); pointer-events: none; }
+
+  /* The departures board. */
+  .readout { display: block; position: absolute; top: 6.6rem; right: var(--pad); width: min(28rem, 34vw); min-height: 17rem; }
+  .rTop { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--hero-rule); font-size: .8rem; color: var(--hero-soft); }
+  .rTop span:first-child { font-variant-numeric: tabular-nums; }
+  .rBoard { margin-top: .9rem; font-family: var(--f-head); font-size: clamp(1.15rem, 1.6vw, 1.45rem); font-weight: 500; line-height: 1.75; perspective: 400px; }
+  .flapWord { display: inline-flex; gap: 3px; white-space: nowrap; margin-right: .2em; }
+  .flap {
+    position: relative;
+    display: inline-block;
+    min-width: .9em;
+    padding: .12em .12em .08em;
+    border-radius: 3px;
+    background: var(--hero-fg);
+    color: var(--hero-bg);
+    text-align: center;
+    line-height: 1.2;
+    transform-origin: 50% 50%;
+    backface-visibility: hidden;
+  }
+  /* The hinge across the middle of every tile. */
+  .flap::after {
+    content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px;
+    background: color-mix(in srgb, var(--hero-bg) 35%, transparent);
+  }
+  .rMeta { margin-top: .6rem; font-size: .85rem; color: var(--hero-soft); }
+  .rLine { margin-top: .9rem; font-size: 1rem; line-height: 1.6; }
+}
+
+/* ---- The route as a portrait map (phones and tablets, motion welcome) ------------- */
+/* The road snakes down the screen; the board sits above it; the section pins as on desktop. */
+@media (max-width: 61.99rem) and (prefers-reduced-motion: no-preference) {
+  .hero { height: 100svh; min-height: 38rem; padding: 0; }
+  .stage { position: relative; display: flex; flex-direction: column; height: 100%; padding: 4.4rem var(--pad) 0 calc(clamp(1.4rem, 5vw, 4.6rem) + 1rem); }
+  .top { margin-bottom: .35rem; font-size: 1.2rem; }
+  .title { font-size: clamp(1.65rem, 7.2vw, 2.6rem); line-height: 1.02; }
+
+  /* The departures board, fixed height so the map never jumps when a long name wraps. */
+  .readout { display: block; flex: none; height: 9.6rem; margin-top: .8rem; overflow: hidden; }
+  .rTop { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: .35rem; border-bottom: 1px solid var(--hero-rule); font-size: .7rem; color: var(--hero-soft); }
+  .rTop span:first-child { font-variant-numeric: tabular-nums; flex: none; }
+  .rTop span:last-child { text-align: right; }
+  .rBoard { margin-top: .5rem; font-family: var(--f-head); font-size: 1rem; font-weight: 500; line-height: 1.75; perspective: 400px; }
+  .flapWord { display: inline-flex; gap: 2px; white-space: nowrap; margin-right: .15em; }
+  .flap { position: relative; display: inline-block; min-width: .9em; padding: .1em .1em .06em; border-radius: 3px; background: var(--hero-fg); color: var(--hero-bg); text-align: center; line-height: 1.2; backface-visibility: hidden; }
+  .flap::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: color-mix(in srgb, var(--hero-bg) 35%, transparent); }
+  .rMeta { margin-top: .25rem; font-size: .72rem; color: var(--hero-soft); }
+  .rLine { margin-top: .35rem; font-size: .8rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+  .field { position: relative; flex: 1; min-height: 0; margin: .6rem 0 1.6rem; }
+  .road { display: block; position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .road path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .ride { stroke: none; }
+  .roadBase { stroke: color-mix(in srgb, var(--hero-fg) 30%, transparent); stroke-width: 2; }
+  .roadWalked { stroke: var(--sun); stroke-width: 5; }
+  .skyBase { stroke: color-mix(in srgb, var(--hero-fg) 38%, transparent); stroke-width: 2.5; stroke-dasharray: 0 9; }
+  .skyWalked circle { fill: var(--sun); opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(.3); transition: opacity .25s ease, transform .35s cubic-bezier(.2,1.6,.4,1); }
+  .skyWalked circle.lit { opacity: 1; transform: scale(1); }
+
+  .listWrap { position: absolute; inset: 0; }
+  .fill, .flight { display: none; }
+  .stops { position: absolute; inset: 0; display: block; margin: 0; padding: 0; border: 0; }
+  .stop { position: absolute; left: var(--mx); top: var(--my); width: 0; height: 0; }
+  .pin, .flight + .pin { left: -.5rem; top: -.5rem; width: 1rem; height: 1rem; }
+  .current .pin { box-shadow: 0 0 0 .4rem color-mix(in srgb, var(--sun) 38%, transparent); }
+  .label { position: absolute; top: 0; width: 8.4rem; transform: translateY(-50%); opacity: .38; transition: opacity .5s ease; }
+  .mRight .label { left: 1rem; }
+  .mLeft .label { right: 1rem; text-align: right; }
+  .reached .label { opacity: 1; }
+  .label h3 { font-size: .86rem; line-height: 1.15; margin: 0; }
+  .kind, .meta { display: none; }
+  .hero[data-pinned] .line { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  .stamp {
+    display: grid; justify-items: center; position: absolute; left: var(--mx); top: var(--my); z-index: 0;
+    padding: .3rem .6rem .35rem;
+    border: 2px solid var(--stamp-ink, var(--clay-ink)); border-radius: .45rem;
+    outline: 1px solid var(--stamp-ink, var(--clay-ink)); outline-offset: 2px;
+    color: var(--stamp-ink, var(--clay-ink));
+    transform: translate(-50%, -50%) rotate(var(--tilt));
+    pointer-events: none;
+  }
+  .stamp strong { font-family: var(--f-head); font-size: .78rem; font-weight: 700; line-height: 1.1; }
+  .stamp span { font-family: var(--f-hand); font-size: .85rem; line-height: 1; }
+
+  .traveller { display: block; position: absolute; left: 0; top: 0; width: 1.6rem; height: 1.6rem; z-index: 3; pointer-events: none; overflow: visible; }
+  .traveller path { fill: var(--sun); stroke: var(--hero-fg); stroke-width: 6; stroke-linejoin: round; }
+  .hint { display: block; position: absolute; right: 0; top: 18%; font-family: var(--f-hand); font-size: 1.15rem; line-height: 1; color: var(--clay-ink); transform: rotate(-4deg); pointer-events: none; }
+}
+
+@media (max-width: 40rem) {
+  .top { font-size: 1.4rem; }
+}
+
+/* ---- What follows the route: the practice, in a line ------------------------------ */
+.practice { max-width: 86rem; margin-inline: auto; padding: 3.4rem var(--pad) 2.6rem; display: grid; gap: 1.4rem 4rem; grid-template-columns: 1fr; border-bottom: 1px solid #2a1b6640; }
+.practice > p { max-width: 34rem; font-size: 1.05rem; line-height: 1.65; }
+.practice > div { max-width: 40rem; }
+.practice > div > span { font-size: .75rem; color: var(--muted); }
+.practice > div > p { margin-top: .5rem; font-family: var(--f-head); font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.55; }
+.practice > div > p > span { color: var(--muted); }
+@media (min-width: 62rem) {
+  .practice { grid-template-columns: 1fr 1.1fr; align-items: start; padding-block: 4.2rem 3rem; }
+}
