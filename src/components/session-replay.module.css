@@ -51,6 +51,16 @@
 .again:active { transform: scale(0.98); }
 .again:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
 
+@media (max-width: 40rem) {
+  .replay { padding: 1rem 0.9rem; }
+  .head h3 { font-size: 1.45rem; line-height: 1.15; }
+  .head p { font-size: 0.9rem; }
+  .canvas { height: 17rem; } /* the reading timeline needs height for the sections */
+  .stats { gap: 0.4rem 1.6rem; }
+  .stats dd { font-size: 1.3rem; }
+  .again { width: 100%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .again { transition: none; }
 }

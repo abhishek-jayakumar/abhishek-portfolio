@@ -62,7 +62,13 @@
 .sessionDisclosure :global(.slog-feed span) { margin-left: 1rem; }
 .sessionDisclosure > p { max-width: 40rem; font-size: .8rem; }
 
+/* The approach intro: three columns only when there is room; otherwise label, headline, paragraph. */
+@media (max-width: 62rem) {
+  .approachIntro { grid-template-columns: 1fr; gap: 1.1rem; }
+  .approachIntro > p:last-child { max-width: 34rem; }
+}
 @media (max-width: 700px) {
+  .approachIntro h2 { font-size: clamp(2.5rem, 12vw, 3.4rem); }
   .investigationDisclosure > div { padding: 1rem; margin-inline: -.4rem; }
   .continuation :global(.lab) { grid-template-columns: 1fr; gap: 2rem; }
   .continuation :global(.doors) { grid-template-columns: 1fr; }

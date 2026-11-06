@@ -19,6 +19,8 @@ const LABELS: Record<string, string> = {
 
 type Band = { label: string; top: number; bottom: number };
 type Stats = { time: string; clicks: number; seen: number; total: number };
+/** "map": the page on its side with the pointer path (desktop). "time": reading position over time (phones). */
+type Mode = "map" | "time";
 
 const fmtTime = (ms: number) => {
   const sec = Math.max(0, Math.round(ms / 1000));
@@ -26,14 +28,17 @@ const fmtTime = (ms: number) => {
 };
 
 /**
- * The ending: this visit, played back. The whole page is laid on its side (top of the page on the
- * left, this section on the right), its sections shown as bands, and the visitor's path drawn
- * across it in brass, with a ring for every click. The data comes from src/lib/session-path.ts and
+ * The ending: this visit, played back. On a desktop the whole page is laid on its side (top of the
+ * page on the left, this section on the right), its sections shown as bands, and the pointer's path
+ * drawn across it in brass, with a ring for every click. Phones have no pointer, so there it becomes
+ * a reading timeline instead: time runs left to right, the page runs top to bottom, and flat
+ * stretches show where the visitor stopped to read. The data comes from src/lib/session-path.ts and
  * never leaves the tab.
  */
 export function SessionReplay() {
   const root = useRef<HTMLDivElement>(null);
   const [stats, setStats] = useState<Stats | null>(null);
+  const [mode, setMode] = useState<Mode>("map");
   const api = useRef({ play: () => {} });
 
   useGSAP(
@@ -47,6 +52,8 @@ export function SessionReplay() {
       let points: PathPoint[] = [];
       let bands: Band[] = [];
       let pageH = 1;
+      let tMax = 1;
+      let view: Mode = "map";
       let progress = 0;
       let W = 0;
       let H = 0;
@@ -69,6 +76,7 @@ export function SessionReplay() {
         bands.forEach((b, i) => {
           b.bottom = i < bands.length - 1 ? bands[i + 1].top : pageH;
         });
+        tMax = Math.max(1, points.at(-1)?.t ?? 1);
         const seen = bands.filter((b) => points.some((p) => p.y >= b.top && p.y <= b.bottom)).length;
         setStats({ time: fmtTime(duration), clicks: points.filter((p) => p.click).length, seen, total: bands.length });
       };
@@ -81,24 +89,47 @@ export function SessionReplay() {
         canvas.width = Math.round(W * dpr);
         canvas.height = Math.round(H * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        // The map only says something if a pointer actually moved around; otherwise (phones, tablets,
+        // keyboard or scroll-only visits) show the reading timeline.
+        const moved = points.filter((p) => Math.abs(p.x - 0.5) > 0.002).length;
+        const next: Mode = W < 560 || moved < points.length * 0.3 ? "time" : "map";
+        if (next !== view) {
+          view = next;
+          setMode(next);
+        }
       };
 
-      // The page on its side: page depth runs left to right, page width runs top to bottom.
-      const px = (p: PathPoint) => (p.y / pageH) * W;
-      const py = (p: PathPoint) => PAD + Math.min(1, Math.max(0, p.x)) * (H - PAD * 2 - 14);
+      // map: the page on its side, page depth left to right, page width top to bottom.
+      // time: time left to right, page depth top to bottom.
+      const depth = (y: number) => PAD + (y / pageH) * (H - PAD * 2);
+      const px = (p: PathPoint) => (view === "map" ? (p.y / pageH) * W : 10 + (p.t / tMax) * (W - 20));
+      const py = (p: PathPoint) => (view === "map" ? PAD + Math.min(1, Math.max(0, p.x)) * (H - PAD * 2 - 14) : depth(p.y));
 
       const draw = () => {
         ctx.clearRect(0, 0, W, H);
         ctx.font = "600 10.5px ui-monospace, Consolas, monospace";
         ctx.textBaseline = "alphabetic";
         bands.forEach((b, i) => {
-          const x0 = (b.top / pageH) * W;
-          const x1 = (b.bottom / pageH) * W;
           ctx.fillStyle = i % 2 ? "rgba(250, 247, 240, 0.035)" : "rgba(250, 247, 240, 0.07)";
-          ctx.fillRect(x0, 0, x1 - x0, H);
-          if (ctx.measureText(b.label).width + 14 < x1 - x0) {
-            ctx.fillStyle = "rgba(250, 247, 240, 0.55)";
-            ctx.fillText(b.label, x0 + 7, H - 8);
+          if (view === "map") {
+            const x0 = (b.top / pageH) * W;
+            const x1 = (b.bottom / pageH) * W;
+            ctx.fillRect(x0, 0, x1 - x0, H);
+            if (ctx.measureText(b.label).width + 14 < x1 - x0) {
+              ctx.fillStyle = "rgba(250, 247, 240, 0.55)";
+              ctx.fillText(b.label, x0 + 7, H - 8);
+            }
+          } else {
+            // Sections as rows, named on the right where the line has usually moved on.
+            const y0 = i === 0 ? 0 : depth(b.top);
+            const y1 = i === bands.length - 1 ? H : depth(b.bottom);
+            ctx.fillRect(0, y0, W, y1 - y0);
+            if (y1 - y0 > 13) {
+              ctx.fillStyle = "rgba(250, 247, 240, 0.55)";
+              ctx.textAlign = "right";
+              ctx.fillText(b.label, W - 8, Math.min(y1 - 4, y0 + 13));
+              ctx.textAlign = "left";
+            }
           }
         });
 
@@ -188,8 +219,10 @@ export function SessionReplay() {
       <div className={s.head}>
         <h3>Here is how you moved through this page.</h3>
         <p>
-          The brass line is your pointer, or your reading position on a phone. Each ring is a click. I study real
-          visitors the same way. This was recorded only in this tab and is never sent anywhere.
+          {mode === "map"
+            ? "The brass line is your pointer as it crossed the page, from the top on the left to here on the right. Each ring is a click."
+            : "Read it left to right: the brass line is where you were on the page over time, and the flat stretches are where you stopped to read. Each ring is a click or tap."}{" "}
+          I study real visitors the same way. This was recorded only in this tab and is never sent anywhere.
         </p>
       </div>
       <canvas className={s.canvas} data-replay aria-hidden="true" />
