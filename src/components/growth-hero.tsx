@@ -30,7 +30,7 @@ type Variant = { key: string; query: string; lede: string; how: string; code?: s
 
 const DEFAULT: Variant = {
   key: "default",
-  query: "growth marketer who also builds the tracking",
+  query: "growth marketer who understands the journey from first click to customer",
   lede: "I bring the right people in, and build the tracking that shows what they did next.",
   how: "This headline changes with the link you arrive on.",
 };
