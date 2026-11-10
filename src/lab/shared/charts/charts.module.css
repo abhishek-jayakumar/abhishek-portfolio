@@ -1,0 +1,239 @@
+/* Charts in the Lab. The data is the only loud thing: hairline grid, muted ticks, text in ink
+   tokens (never the series colour), the body sans throughout (no display face in a chart). */
+
+.frame {
+  margin: 0;
+  min-width: 0;
+  padding: 1.1rem 1.2rem 1rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  font-family: var(--f-body);
+}
+.frameHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+  margin-bottom: 0.7rem;
+}
+.title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.subtitle {
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.frameActions {
+  display: flex;
+  gap: 0.4rem;
+  flex: none;
+}
+.toggle {
+  min-height: 32px;
+  padding: 0 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 650;
+  color: var(--ink);
+  cursor: pointer;
+}
+.toggle:hover {
+  background: var(--blush);
+}
+.toggle[aria-pressed="true"] {
+  background: var(--forest);
+  border-color: var(--forest);
+  color: var(--cream);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+  margin: 0 0 0.6rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.78rem;
+  color: #4a4560;
+}
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.keyLine {
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+}
+.keyRect {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.plot,
+.plotScroll {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+.plotScroll {
+  overflow-x: auto;
+}
+.plot svg,
+.plotScroll svg {
+  display: block;
+  overflow: visible;
+  font-family: var(--f-body);
+}
+
+.grid {
+  stroke: #ebe6f3;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.baseline {
+  stroke: #c9c2dc;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.reference {
+  stroke: #625c78;
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+.refLabel {
+  font-size: 10.5px;
+  fill: #625c78;
+  font-weight: 600;
+}
+.tick {
+  font-size: 11px;
+  fill: #7a7490;
+  font-variant-numeric: tabular-nums;
+}
+.catLabel,
+.catLabelStart {
+  font-size: 12px;
+  fill: #2c2645;
+  font-weight: 550;
+}
+.valueLabel {
+  font-size: 12px;
+  fill: #1d1736;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.endLabel {
+  font-size: 11.5px;
+  fill: #2c2645;
+  font-weight: 600;
+}
+.cellLabel {
+  font-size: 10.5px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+.emptyCell {
+  fill: none;
+  stroke: #e1dbec;
+  stroke-width: 1;
+}
+.step {
+  font-size: 11.5px;
+  fill: #625c78;
+}
+.stepFlag {
+  font-size: 11.5px;
+  fill: #b3261e;
+  font-weight: 700;
+}
+.crosshair {
+  stroke: #625c78;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.hit {
+  cursor: crosshair;
+  outline: none;
+}
+.hit:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+}
+.barGroup {
+  cursor: default;
+  outline: none;
+}
+.barGroup:focus-visible rect:first-child {
+  fill: rgba(91, 63, 208, 0.08);
+}
+
+.tip {
+  position: absolute;
+  z-index: 5;
+  padding: 0.55rem 0.7rem;
+  background: #1d1736;
+  color: #faf7f0;
+  border-radius: 0.55rem;
+  box-shadow: 0 10px 28px -12px rgba(29, 23, 54, 0.55);
+  font-size: 0.76rem;
+  line-height: 1.35;
+  pointer-events: none;
+}
+.tipTitle {
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+.tip ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.2rem;
+}
+.tip li {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 0.45rem;
+}
+.tip li strong {
+  font-variant-numeric: tabular-nums;
+  color: #ffffff;
+}
+.tip li span:last-child {
+  color: #cfc8e6;
+}
+.tipKey {
+  width: 10px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.spark {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.noData {
+  display: grid;
+  place-items: center;
+  min-height: 140px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: 0.6rem;
+}

@@ -3,10 +3,15 @@ import { FieldOfView } from "./field-of-view";
 import { GrowthHero } from "./growth-hero";
 import hero from "./career-route.module.css";
 
+/** The first screen: name, one line, and the way to the work. */
 export function PortfolioOpening() {
+  return <GrowthHero />;
+}
+
+/** The career story, after the work: the route map, the practice in a line, then each seat. */
+export function CareerStory() {
   return (
     <>
-      <GrowthHero />
       <CareerRoute />
       <div className={hero.practice}>
         <p>Sales taught me to listen. Retention taught me to look beyond the first conversion. Marketing gave me the tools to connect the journey.</p>

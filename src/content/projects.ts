@@ -163,7 +163,7 @@ export const projects: Project[] = [
       {
         title: "What came out of it",
         body: [
-          "About 1,000 leads and 50 conversions against 50 available seats. Divide one by the other and there were at least 20 enquiries for every seat, which is why quality mattered more than volume. Drag the dial below to see how the problem changes shape if the seats change.",
+          "About 1,000 leads and 50 conversions against 50 available seats. Divide one by the other and there were at least 20 enquiries for every seat, which is why quality mattered more than volume. The seats slider at the end of this page shows how the problem changes shape if the seats change.",
         ],
       },
     ],
@@ -520,7 +520,7 @@ export const projects: Project[] = [
       {
         title: "What I can't tell you yet",
         body: [
-          "The folder holds the code, not the numbers. I don't have lead counts, form-completion rates or search rankings for the rebuilt site, so there are none here. The round-one results are from my earlier reporting for the first site and the Google Ads campaign.",
+          "I don't yet have lead counts, form-completion rates or search rankings for the rebuilt site, so there are none here. The round-one results are from my earlier reporting for the first site and the Google Ads campaign.",
         ],
       },
       {

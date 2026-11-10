@@ -43,3 +43,6 @@ next-env.d.ts
 # source material (not part of the app)
 /Projects/
 /Resume/
+
+# Private source résumés (not part of the site)
+/Resume/

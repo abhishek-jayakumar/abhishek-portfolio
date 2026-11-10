@@ -103,6 +103,10 @@ export function PageMotion() {
           e.preventDefault();
           e.stopPropagation();
           history.pushState(null, "", a.hash);
+          // Something else (the router) can set html { scroll-behavior: smooth } back after mount.
+          // Native smoothing makes the scroll lag the tween, autoKill reads that as the visitor
+          // scrolling, and the glide stops dead (phones never moved). So switch it off per click.
+          root.style.scrollBehavior = "auto";
           const smoother = ScrollSmoother.get();
           if (smoother) smoother.scrollTo(target, true, "top 72px");
           else gsap.to(window, { duration: 1.3, ease: "sunrise", scrollTo: { y: target, offsetY: 72, autoKill: true } });

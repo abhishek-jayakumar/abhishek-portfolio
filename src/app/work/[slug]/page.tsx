@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { BurlChat } from "@/components/burl-chat";
 import { CaseShell } from "@/components/case-shell";
@@ -141,7 +142,19 @@ function Chapter({ b, id }: { b: Block; id: string }) {
   );
 }
 
-export default async function WorkPage({ params }: PageProps<"/work/[slug]">) {
+/**
+ * The slug is read inside a Suspense boundary, so a click on a case-study link can show the
+ * page frame at once while the (prerendered) case streams in, as Cache Components requires.
+ */
+export default function WorkPage({ params }: PageProps<"/work/[slug]">) {
+  return (
+    <Suspense fallback={<div className={s.page} style={{ minHeight: "100vh" }} aria-busy="true" />}>
+      <CaseStudy params={params} />
+    </Suspense>
+  );
+}
+
+async function CaseStudy({ params }: { params: PageProps<"/work/[slug]">["params"] }) {
   const { slug } = await params;
   const p = getProject(slug);
   if (!p) notFound();

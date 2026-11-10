@@ -4,6 +4,7 @@ import { useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { gsap, useGSAP, ScrollTrigger, Flip } from "@/lib/gsap-plugins";
 import { track } from "@/lib/track";
 import { startSessionPath } from "@/lib/session-path";
+import { CV } from "@/content/site";
 import s from "./growth-hero.module.css";
 
 /**
@@ -605,6 +606,9 @@ export function GrowthHero() {
             </a>
             <a className={s.ghost} href="#contact" data-track="hero_get_in_touch">
               Get in touch
+            </a>
+            <a className={s.ghost} href={CV.href} download={CV.file} data-track="hero_download_cv">
+              Download CV <span aria-hidden="true">&nbsp;↓</span>
             </a>
           </div>
           <p className={s.note} data-arrive>

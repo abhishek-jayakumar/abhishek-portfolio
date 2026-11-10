@@ -1,127 +1,110 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
-import { QUEUED } from "@/content/site";
-import { track } from "@/lib/track";
-import { BurlChat } from "./burl-chat";
-import { LeakFinder } from "./leak-finder";
-import { MiniQuiz } from "./mini-quiz";
-import { SeatDial } from "./seat-dial";
+import { useRef } from "react";
+import { gsap, useGSAP } from "@/lib/gsap-plugins";
+import { EXPERIMENTS } from "@/lab/experiments";
+import { LabPreview } from "./lab-previews";
+import s from "./lab-cards.module.css";
 
-type Bench = {
-  id: string;
-  no: string;
-  title: string;
-  asks: string;
-  status: string;
-  area: string;
-  from?: { slug: string; label: string };
-  tone: "forest" | "sage" | "blush";
-  body: ReactNode;
-};
-
-const BENCHES: Bench[] = [
-  {
-    id: "leak",
-    no: "01",
-    title: "The leak finder",
-    asks: "Where is one extra point worth the most?",
-    status: "Model, invented numbers",
-    area: "Funnel analysis, CRO",
-    tone: "forest",
-    body: <LeakFinder />,
-  },
-  {
-    id: "seats",
-    no: "02",
-    title: "The seat dial",
-    asks: "What changes when capacity changes?",
-    status: "From a real campaign",
-    area: "Acquisition strategy",
-    from: { slug: "cscp", label: "the CSCP campaign" },
-    tone: "forest",
-    body: <SeatDial />,
-  },
-  {
-    id: "quiz",
-    no: "03",
-    title: "Three-question career quiz",
-    asks: "Can a quiz do the work of a form?",
-    status: "Real questions and scoring",
-    area: "Interactive funnels, GA4",
-    from: { slug: "career-discovery", label: "the Career Discovery Platform" },
-    tone: "sage",
-    body: <MiniQuiz />,
-  },
-  {
-    id: "chat",
-    no: "04",
-    title: "The lead-qualifying chat",
-    asks: "What can seven questions tell a team before they call?",
-    status: "Working recreation",
-    area: "Lead capture, event tracking",
-    from: { slug: "burl-concepts", label: "the Burl Concepts site" },
-    tone: "blush",
-    body: <BurlChat />,
-  },
-];
-
+/**
+ * The Lab on the homepage: four experiments, each a card that opens a working tool on its own
+ * page. The previews play once when the cards arrive and again on hover or focus; with reduced
+ * motion they are simply still pictures.
+ */
 export function Lab() {
-  const [open, setOpen] = useState(BENCHES[0].id);
-  const bench = BENCHES.find((b) => b.id === open) ?? BENCHES[0];
+  const root = useRef<HTMLUListElement>(null);
+
+  useGSAP(
+    () => {
+      const el = root.current;
+      if (!el) return;
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const cards = gsap.utils.toArray<HTMLElement>("[data-card]", el);
+        const timelines = cards.map((card) => {
+          const q = gsap.utils.selector(card);
+          const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+          // Each preview has only some of these parts; animate the ones this card has.
+          const part = (sel: string, vars: gsap.TweenVars, at: number) => {
+            const els = q(sel);
+            if (els.length) tl.from(els, vars, at);
+          };
+          part("[data-grow]", { scaleX: 0, transformOrigin: "0% 50%", duration: 0.7, stagger: 0.07 }, 0);
+          part("[data-draw]", { drawSVG: "0%", duration: 1.1, ease: "power2.inOut" }, 0.2);
+          part("[data-wash]", { opacity: 0, duration: 0.6 }, 0.7);
+          part("[data-pop]", { scale: 0, transformOrigin: "50% 50%", duration: 0.5, ease: "back.out(3)" }, 1.1);
+          part("[data-seg]", { scaleX: 0, transformOrigin: "0% 50%", duration: 0.55, stagger: 0.06 }, 0);
+          part("[data-knob]", { x: -60, opacity: 0, duration: 0.8, stagger: 0.1 }, 0.3);
+          part("[data-cell]", { opacity: 0, scale: 0.6, transformOrigin: "50% 50%", duration: 0.35, stagger: 0.018 }, 0);
+          part("[data-bar]", { scaleY: 0, transformOrigin: "50% 100%", duration: 0.8, stagger: 0.15 }, 0);
+          part("[data-whisker]", { scaleY: 2.2, opacity: 0, transformOrigin: "50% 50%", duration: 0.9, stagger: 0.15 }, 0.5);
+          return tl;
+        });
+
+        // Play each preview once as the cards come into view.
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((en) => {
+              if (!en.isIntersecting) return;
+              const i = cards.indexOf(en.target as HTMLElement);
+              timelines[i]?.play(0);
+              io.unobserve(en.target);
+            });
+          },
+          { threshold: 0.35 },
+        );
+        cards.forEach((c) => io.observe(c));
+
+        // Replay on hover or keyboard focus.
+        const offs = cards.map((card, i) => {
+          const replay = () => {
+            if (!timelines[i].isActive()) timelines[i].play(0);
+          };
+          card.addEventListener("pointerenter", replay);
+          card.addEventListener("focusin", replay);
+          return () => {
+            card.removeEventListener("pointerenter", replay);
+            card.removeEventListener("focusin", replay);
+          };
+        });
+
+        return () => {
+          io.disconnect();
+          offs.forEach((off) => off());
+        };
+      });
+    },
+    { scope: root },
+  );
 
   return (
-    <div className="lab">
-      <div className="lab-index" role="tablist" aria-label="Experiments" aria-orientation="vertical">
-        {BENCHES.map((b) => (
-          <button
-            key={b.id}
-            type="button"
-            role="tab"
-            id={`lab-tab-${b.id}`}
-            aria-selected={b.id === open}
-            aria-controls="lab-bench"
-            className="lab-tab"
-            onClick={() => {
-              setOpen(b.id);
-              track("lab_open", b.id);
-            }}
-          >
-            <span className="lab-no">{b.no}</span>
-            <span className="lab-tab-text">
-              <strong>{b.title}</strong>
-              <small>{b.asks}</small>
-            </span>
-          </button>
-        ))}
-
-        <div className="lab-queue">
-          <p className="lab-queue-h">On the list next</p>
-          <ul>
-            {QUEUED.map((q) => (
-              <li key={q}>{q}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <div className={`lab-bench bench-${bench.tone}`} id="lab-bench" role="tabpanel" aria-labelledby={`lab-tab-${bench.id}`}>
-        <header>
-          <p className="lab-meta">
-            <span>Experiment {bench.no}</span>
-            <span>{bench.status}</span>
-            <span>{bench.area}</span>
-          </p>
-          <h3>{bench.asks}</h3>
-          {bench.from && (
-            <p className="lab-from">
-              Built from <Link href={`/work/${bench.from.slug}`}>{bench.from.label}</Link>
-            </p>
-          )}
-        </header>
-        {bench.body}
-      </div>
-    </div>
+    <ul ref={root} className={s.cards}>
+      {EXPERIMENTS.map((e) => (
+        <li key={e.slug} data-card>
+          <Link href={`/lab/${e.slug}`} className={s.card} data-track={`lab_open_${e.slug}`}>
+            <div className={`${s.preview} ${s[`pv_${e.preview}`]}`}>
+              <LabPreview kind={e.preview} />
+            </div>
+            <div className={s.body}>
+              <p className={s.meta}>
+                <span className={s.no}>Experiment {e.no}</span>
+                <span>{e.category}</span>
+              </p>
+              <h3 className={s.title}>{e.title}</h3>
+              <p className={s.short}>{e.short}</p>
+              <ul className={s.tools} aria-label="Built with">
+                {e.tools.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+              <span className={s.cta}>
+                {e.cta} <span aria-hidden="true">→</span>
+              </span>
+            </div>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

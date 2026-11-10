@@ -136,7 +136,7 @@ export function FieldOfView() {
       let shown = -1;
       const show: Api["show"] = (v, mode) => {
         if (mode === "clear-ghost") {
-          gsap.to(ghostLayer.children, { opacity: 0, duration: 0.25, onComplete: () => ghostLayer.replaceChildren() });
+          if (ghostLayer.children.length) gsap.to(ghostLayer.children, { opacity: 0, duration: 0.25, onComplete: () => ghostLayer.replaceChildren() });
           return;
         }
         if (mode === "ghost") {
@@ -149,7 +149,7 @@ export function FieldOfView() {
         ghostLayer.replaceChildren();
         const old = Array.from(beamLayer.children);
         if (reduced) old.forEach((n) => n.remove());
-        else gsap.to(old, { opacity: 0, duration: 0.3, onComplete: () => old.forEach((n) => n.remove()) });
+        else if (old.length) gsap.to(old, { opacity: 0, duration: 0.3, onComplete: () => old.forEach((n) => n.remove()) });
         draw(beamLayer, v, !reduced, s.beam);
         drawTrack(v, !reduced);
         const lit = new Set(seesOf(v));

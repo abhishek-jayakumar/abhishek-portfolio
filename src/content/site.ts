@@ -202,14 +202,6 @@ export const BRANDS = [
   "Hanlons Brewery",
 ];
 
-/** Experiments that are queued, taken from the "what I'd do next" list on the Burl build. */
-export const QUEUED = [
-  "Capture UTM parameters so every lead can be tied to the ad that brought it.",
-  "Test the chat opening on click against opening after two seconds.",
-  "Fire form_submit only after the server confirms, so the conversion count can be trusted.",
-  "Use the thank-you page as the conversion signal in Google Ads and Meta.",
-];
-
 const SUBJECT = encodeURIComponent;
 export const EMAIL = "abhishekjayakumar1994@gmail.com";
 export const DOORS = [
@@ -232,3 +224,25 @@ export const DOORS = [
     href: `mailto:${EMAIL}?subject=${SUBJECT("A question about something on your site")}`,
   },
 ];
+
+/** The CV download. Source: cv/cv.html, exported to this PDF. */
+export const CV = { href: "/cv/Abhishek-Jayakumar-CV.pdf", file: "Abhishek-Jayakumar-CV.pdf" } as const;
+
+/** Other places to reach me. Shown under the email doors and in the footer. */
+export const SOCIALS = [
+  {
+    key: "linkedin",
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/abhishek-jayakumar-557600145",
+  },
+  {
+    key: "whatsapp",
+    label: "WhatsApp",
+    href: `https://wa.me/919400806081?text=${SUBJECT("Hi Abhishek, I saw your portfolio.")}`,
+  },
+  {
+    key: "x",
+    label: "X",
+    href: "https://x.com/abhishekgrowth1",
+  },
+] as const;

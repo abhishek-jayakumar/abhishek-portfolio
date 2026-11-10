@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { PortfolioOpening } from "@/components/portfolio-opening";
+import { CareerStory, PortfolioOpening } from "@/components/portfolio-opening";
 import { MarketingApproach } from "@/components/marketing-approach";
 import { Lab } from "@/components/lab";
 import { AboutStickers } from "@/components/about-stickers";
@@ -8,6 +8,7 @@ import { PageMotion } from "@/components/page-motion";
 import { WorkReel } from "@/components/work-reel";
 import { SessionLog } from "@/components/session-log";
 import { SessionReplay } from "@/components/session-replay";
+import { SocialLinks } from "@/components/social-links";
 import direction from "@/components/portfolio-direction.module.css";
 import { DOORS, SCHOOL } from "@/content/site";
 
@@ -15,19 +16,21 @@ export default function Home() {
   return (
     <>
       <PortfolioOpening />
-      <MarketingApproach />
       <WorkReel />
+      <CareerStory />
+      <MarketingApproach />
       <div className={direction.continuation}>
       {/* 5. THE LAB */}
       <section id="lab" className="labwrap" data-section="lab">
         <div className="lab-inner">
           <div className="section-head" data-reveal>
             <h2>The lab</h2>
-            <p className="hand">things I build to understand what happens next</p>
+            <p className="hand">working tools for real growth questions</p>
           </div>
           <p className="lab-lede" data-reveal>
-            A workshop, not a gallery. Each bench is a working experiment about a question I had: some are models,
-            some are recreations of real builds. Open one and play with it.
+            A workshop of growth marketing experiments: analytics, paid media, retention and conversion tools I built
+            to answer the questions a growth team asks every week. Each one runs on clearly labelled synthetic data, and
+            every recommendation shows the numbers it rests on.
           </p>
           <div data-reveal>
             <Lab />
@@ -112,6 +115,8 @@ export default function Home() {
             </a>
           ))}
         </div>
+        <p className="socials-lede" data-reveal>Or find me here.</p>
+        <SocialLinks />
       </section>
       </div>
       <PageMotion />

@@ -24,30 +24,6 @@
 .continuation :global(.lab-inner), .continuation :global(.zero-inner) { max-width: 86rem; margin: auto; padding: 3rem var(--pad); }
 .continuation :global(.labwrap) { background: #efeaf9; }
 .continuation :global(.lab-lede) { max-width: 44rem; margin-bottom: 2rem; }
-.continuation :global(.lab) { display: grid; grid-template-columns: .65fr 1.4fr; gap: 3rem; }
-.continuation :global(.lab-index) { display: flex; flex-direction: column; align-items: stretch; }
-.continuation :global(.lab-tab) { display: flex; gap: .7rem; text-align: left; background: transparent; border: 0; border-top: 1px solid #2a1b6655; padding: 1rem 0; font: inherit; font-size: .95rem; color: var(--ink); cursor: pointer; }
-.continuation :global(.lab-tab[aria-selected="true"]) { border-top: 3px solid var(--forest); }
-.continuation :global(.lab-tab-text small) { display: block; font-size: .78rem; line-height: 1.5; margin-top: .4rem; }
-.continuation :global(.lab-no) { font-size: .7rem; }
-.continuation :global(.lab-queue) { margin-top: 2rem; font-size: .8rem; }
-.continuation :global(.lab-queue ul) { padding-left: 1.2rem; }
-.continuation :global(.lab-queue li) { margin-top: .6rem; }
-.continuation :global(.lab-meta) { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .72rem; margin-bottom: 1rem; }
-.continuation :global(.lab-bench) { min-width: 0; }
-.continuation :global(.lab-bench:has(.dial)) { background: var(--forest); color: var(--cream); padding: 1.4rem; }
-.continuation :global(.lab-bench:has(.dial) h3) { color: var(--cream); }
-.continuation :global(.lab-bench h3) { font-size: 1.8rem; }
-.continuation :global(.lab-from) { font-size: .8rem; margin-top: .7rem; }
-.continuation :global(.leak-controls) { display: grid; gap: 1rem; margin-block: 1.5rem; }
-.continuation :global(.leak-row label) { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; font-size: .85rem; }
-.continuation :global(.leak-row input) { width: 100%; accent-color: var(--forest); }
-.continuation :global(.leak-bars), .continuation :global(.leak-levers ul) { list-style: none; padding: 0; font-size: .8rem; }
-.continuation :global(.leak-bars li), .continuation :global(.leak-levers li) { display: grid; grid-template-columns: 6rem 1fr 3rem; align-items: center; gap: .7rem; margin-block: .6rem; }
-.continuation :global(.leak-bars i), .continuation :global(.leak-levers i) { height: 8px; display: block; background: var(--forest); }
-.continuation :global(.leak-levers .best i) { background: var(--clay-ink); }
-.continuation :global(.leak-label), .continuation :global(.leak-note) { font-size: .75rem; margin-top: 1rem; }
-.continuation :global(.leak-read) { font-size: .9rem; margin-top: 1.2rem; }
 .continuation :global(.about-photo img) { border: 0; box-shadow: none; border-radius: 0; transform: none; }
 .continuation :global(.contact) { border: 0; border-radius: 0; box-shadow: none; }
 .continuation :global(.doors) { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
@@ -70,7 +46,6 @@
 @media (max-width: 700px) {
   .approachIntro h2 { font-size: clamp(2.5rem, 12vw, 3.4rem); }
   .investigationDisclosure > div { padding: 1rem; margin-inline: -.4rem; }
-  .continuation :global(.lab) { grid-template-columns: 1fr; gap: 2rem; }
   .continuation :global(.doors) { grid-template-columns: 1fr; }
 }
 

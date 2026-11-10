@@ -4,21 +4,23 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { gsap, useGSAP, ScrollTrigger } from "@/lib/gsap-plugins";
+import { CV } from "@/content/site";
 import s from "./site-header.module.css";
 
 /** The page as a route. Each stop is a section, in the order you meet it. */
 const STOPS = [
   { id: "top", label: "Start", hint: "the growth system" },
+  { id: "work", label: "Work", hint: "things I’ve put into practice" },
   { id: "route", label: "Route", hint: "where I’ve been" },
   { id: "experience", label: "Experience", hint: "what each seat showed me" },
   { id: "pov", label: "Approach", hint: "how I think about the work" },
-  { id: "work", label: "Work", hint: "things I’ve put into practice" },
-  { id: "lab", label: "Lab", hint: "experiments" },
+  { id: "lab", label: "Lab", hint: "working growth tools" },
   { id: "about", label: "About", hint: "the person" },
   { id: "contact", label: "Contact", hint: "say hello" },
 ] as const;
 const N = STOPS.length;
 const WORK = STOPS.findIndex((st) => st.id === "work");
+const LAB = STOPS.findIndex((st) => st.id === "lab");
 
 const clock = new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", hour: "numeric", minute: "2-digit", hour12: true });
 
@@ -35,8 +37,10 @@ const clock = new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", hour:
 export function SiteHeader() {
   const pathname = usePathname();
   const home = pathname === "/";
+  // Away from the homepage, the dock says which part of the site you are reading.
+  const away = pathname.startsWith("/lab") ? LAB : WORK;
   const root = useRef<HTMLElement>(null);
-  const [current, setCurrent] = useState(home ? 0 : WORK);
+  const [current, setCurrent] = useState(home ? 0 : away);
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState("");
 
@@ -74,8 +78,8 @@ export function SiteHeader() {
       };
 
       if (!home) {
-        place(WORK);
-        show(WORK);
+        place(away);
+        show(away);
         return;
       }
 
@@ -109,7 +113,7 @@ export function SiteHeader() {
       update();
       return () => st.kill();
     },
-    { scope: root, dependencies: [home] },
+    { scope: root, dependencies: [home, away], revertOnUpdate: true },
   );
 
   // The sheet closes on Escape, on a choice, or on a press outside it.
@@ -119,11 +123,18 @@ export function SiteHeader() {
     const onDown = (e: PointerEvent) => {
       if (!root.current?.querySelector("[data-dock]")?.contains(e.target as Node)) setOpen(false);
     };
+    // A choice in the sheet closes it. Listened for on window (capture) because the page's
+    // smooth-scroll anchor handler stops the click at document level, before React sees it.
+    const onPick = (e: MouseEvent) => {
+      if ((e.target as Element | null)?.closest?.("#route-sheet a")) setOpen(false);
+    };
     document.addEventListener("keydown", onKey);
     document.addEventListener("pointerdown", onDown);
+    window.addEventListener("click", onPick, true);
     return () => {
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("click", onPick, true);
     };
   }, [open]);
 
@@ -174,6 +185,11 @@ export function SiteHeader() {
         </div>
       </nav>
 
+      <div className={s.right}>
+      <a href={CV.href} download={CV.file} className={s.cv} data-track="header_download_cv" aria-label="Download my CV (PDF)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14" /></svg>
+        <strong>CV</strong>
+      </a>
       <Link href="/#contact" className={s.hello} data-track="header_say_hello" data-burst aria-label={`Say hello. Open to roles${time ? `; it is ${time} in Bengaluru` : ""}`}>
         <span className={s.pulse} aria-hidden="true" />
         <span className={s.hi} aria-hidden="true">Hi</span>
@@ -182,6 +198,7 @@ export function SiteHeader() {
           open to roles{time && <>, {time} in Bengaluru</>}
         </small>
       </Link>
+      </div>
     </header>
   );
 }

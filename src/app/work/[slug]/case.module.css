@@ -77,14 +77,16 @@
   font-size: 0.9rem;
   font-weight: 700;
   text-decoration: none;
-  opacity: 0.8;
-  transition: opacity 0.3s ease;
+  opacity: 0.92;
+  /* No opacity transition here: the cover entrance animates opacity, and a CSS transition
+     running underneath made it read 0 as the end value, leaving the link invisible. */
 }
 .back span {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .back:hover {
   opacity: 1;
+  transition: opacity 0.3s ease;
 }
 .back:hover span {
   transform: translateX(-4px);
@@ -272,7 +274,7 @@
 }
 .statValue {
   font-family: var(--f-head);
-  font-size: clamp(4.5rem, 15vw, 12rem);
+  font-size: clamp(2.8rem, 14vw, 12rem);
   font-weight: 700;
   line-height: 0.9;
   letter-spacing: -0.045em;
@@ -284,7 +286,7 @@
   line-height: 1.35;
 }
 .stat .factNote {
-  opacity: 0.75;
+  opacity: 1;
 }
 
 /* ---- The case in brief ------------------------------------------------------------------ */
@@ -367,7 +369,8 @@
 .factNote {
   font-size: 0.85rem;
   line-height: 1.4;
-  color: var(--muted);
+  /* Mixed from the page colour so it stays readable on dark covers as well as light ones. */
+  color: color-mix(in srgb, var(--fg) 74%, var(--bg));
 }
 
 /* ---- Exhibit ---------------------------------------------------------------------------- */

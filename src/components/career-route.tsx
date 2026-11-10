@@ -8,7 +8,6 @@ import s from "./career-route.module.css";
 const CIRCLE = "M50,10 C72,10 90,28 90,50 C90,72 72,90 50,90 C28,90 10,72 10,50 C10,28 28,10 50,10Z";
 const PLANE = "M96,50 L6,14 L28,50 L6,86 Z";
 const STAR = "M50,4 L62,38 L96,38 L68,59 L79,94 L50,73 L21,94 L32,59 L4,38 L38,38Z";
-const FLAP_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 /** Same conditions the stylesheet uses: the map whenever motion is welcome, drawn landscape on wide screens and portrait on phones. */
 const MOTION = "(prefers-reduced-motion: no-preference)";
@@ -23,14 +22,15 @@ const meta = (st: (typeof ROUTE)[number]) => [st.when, st.place].filter(Boolean)
 /**
  * The career, drawn as a journey. It starts on ledger paper (where it started: finance), the line
  * leaves in right angles and learns to curve, and the two border crossings (to the UK for the MSc,
- * then back home) are flight arcs. The section pins and scrolling rides a
- * traveller along it: the walked road fills in, the traveller becomes a paper plane in the air,
+ * then back home) are flight arcs. When the section comes into view a
+ * traveller walks it once by itself (it never holds the scroll): the walked road fills in, the traveller becomes a paper plane in the air,
  * a passport stamp lands in each country, the paper loosens from ruled lines into a dot grid,
- * and the world darkens for the last stop. A split-flap board names where you are.
+ * and the world darkens for the last stop. A board names where you are; after the walk, pointing
+ * at (or tabbing to) any stop puts it on the board.
  * Wide screens get a landscape map; phones a portrait one whose road snakes down the screen, so
- * scrolling down walks it. With reduced motion it is the same story as a plain list.
+ * it reads top to bottom. With reduced motion it is the same story as a plain list.
  *
- *   SplitText / ScrambleText  the heading, numbers resolving into words
+ *   SplitText   the heading, line by line
  *   DrawSVG     the road, the walked line, the flight masks
  *   MotionPath  the traveller riding the road        MorphSVG  circle, plane, star
  *   CustomBounce  stops drop onto the map, stamps press down
@@ -66,12 +66,10 @@ export function CareerRoute() {
         tl.to(all("[data-intro-fade]"), { opacity: 1, duration: 0.9, stagger: 0.08 }, 0);
         if (split) {
           tl.to(split.lines, { yPercent: 0, duration: 1.25, stagger: 0.13 }, 0.1);
-          // The first line starts as numbers, because that is where it started.
-          tl.to(split.lines[0], { duration: 1.6, scrambleText: { text: "Numbers first.", chars: "0123456789", speed: 0.35, revealDelay: 0.4 } }, 0.1);
         }
 
         // ---- The journey (landscape on wide screens, portrait on phones) ---------------------------
-        el.dataset.pinned = "true";
+        el.dataset.map = "true";
         const ledger = one("[data-ledger]");
         const dots = one("[data-dots]");
         const field = one("[data-field]");
@@ -165,52 +163,29 @@ export function CareerRoute() {
           .to(labels, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.17 }, 1.1)
           .to(traveller, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(2.4)" }, 2.0);
         if (readout) tl.to(readout, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 1.6);
-        if (hint) tl.to(hint, { opacity: 1, duration: 0.8 }, 2.5);
+        // Once the map is down, the traveller walks the whole route by itself (no scrolling
+        // needed), then any stop can be read by hovering, tapping or tabbing to it.
+        const proxy = { p: 0 };
+        let walk: gsap.core.Tween | null = null;
+        let walked = false;
         tl.add(() => {
           gsap.set(labels, { clearProps: "opacity,y" });
           gsap.set(pins, { clearProps: "opacity,y,scaleX,scaleY,transformOrigin" });
           introDone = true;
-          render(latest, true);
+          render(0, true);
+          walk = gsap.to(proxy, {
+            p: 1,
+            duration: 3.8,
+            ease: "power1.inOut",
+            onUpdate: () => render(proxy.p),
+            onComplete: () => {
+              walked = true;
+              if (hint) gsap.to(hint, { opacity: 1, duration: 0.8 });
+            },
+          });
         }, ">");
         let introDone = false;
         void loadDevTools({ dot: traveller, path: road, timeline: tl });
-
-        // The split-flap board: each letter flips through a few others before it lands.
-        let flaps: gsap.core.Timeline[] = [];
-        const flapTo = (text: string, animate: boolean) => {
-          if (!rBoard) return;
-          flaps.forEach((f) => f.kill());
-          flaps = [];
-          rBoard.textContent = "";
-          let n = 0;
-          text.split(" ").forEach((word, wi, words) => {
-            const w = document.createElement("span");
-            w.className = s.flapWord;
-            for (const ch of word) {
-              const tile = document.createElement("span");
-              tile.className = s.flap;
-              tile.textContent = ch;
-              w.append(tile);
-              if (animate) {
-                const f = gsap.timeline({ delay: n * 0.03 });
-                const turns = 2 + Math.floor(Math.random() * 3);
-                for (let k = 0; k < turns; k++) {
-                  const next = k === turns - 1 ? ch : FLAP_CHARS[Math.floor(Math.random() * FLAP_CHARS.length)];
-                  f.to(tile, { rotationX: -90, duration: 0.055, ease: "power1.in" })
-                    .add(() => {
-                      tile.textContent = next;
-                    })
-                    .set(tile, { rotationX: 90 })
-                    .to(tile, { rotationX: 0, duration: 0.07, ease: "power1.out" });
-                }
-                flaps.push(f);
-              }
-              n++;
-            }
-            rBoard.append(w);
-            if (wi < words.length - 1) rBoard.append(" ");
-          });
-        };
 
         let shown = -1;
         const showStop = (index: number) => {
@@ -219,12 +194,34 @@ export function CareerRoute() {
           shown = index;
           if (rCount) rCount.textContent = `Stop ${index + 1} of ${N}`;
           if (rMeta) rMeta.textContent = meta(stop);
-          if (rLine) {
-            rLine.textContent = stop.line;
-            if (!first) gsap.fromTo(rLine, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out", overwrite: true });
+          if (rBoard) rBoard.textContent = stop.title;
+          if (rLine) rLine.textContent = stop.line;
+          if (!first) {
+            const changed = [rBoard, rMeta, rLine].filter(Boolean);
+            gsap.fromTo(changed, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out", stagger: 0.04, overwrite: true });
           }
-          flapTo(stop.title, !first);
         };
+
+        // After the walk: point at a stop to read it on the board.
+        const pick = (i: number) => {
+          if (!walked || i === shown) return;
+          stops.forEach((stop, k) => stop.classList.toggle(s.current, k === i));
+          if (rKind) rKind.textContent = lastKind = ROUTE[i].kind;
+          showStop(i);
+        };
+        const offs = stops.map((stop, i) => {
+          const on = () => pick(i);
+          stop.tabIndex = 0;
+          stop.addEventListener("pointerenter", on);
+          stop.addEventListener("focus", on);
+          stop.addEventListener("click", on);
+          return () => {
+            stop.removeAttribute("tabindex");
+            stop.removeEventListener("pointerenter", on);
+            stop.removeEventListener("focus", on);
+            stop.removeEventListener("click", on);
+          };
+        });
 
         // Passport stamps press down once, and lift again if you scroll back past the border.
         const pressed = STAMPS.map(() => false);
@@ -291,26 +288,9 @@ export function CareerRoute() {
             "--hero-fg": gsap.utils.interpolate("#1d1736", "#faf7f0", night),
             "--stamp-ink": gsap.utils.interpolate("#5b3fd0", "#c8a45a", night),
           });
-          if (hint && introDone) gsap.set(hint, { opacity: p > 0.015 ? 0 : 1 });
           if (introDone) pressStamps(index, force);
           if (index !== shown) showStop(index);
         };
-
-        const proxy = { p: 0 };
-        gsap.to(proxy, {
-          p: 1,
-          ease: "none",
-          onUpdate: () => render(proxy.p),
-          scrollTrigger: {
-            trigger: el,
-            start: "top top",
-            end: `+=${(N - 1) * 62}%`,
-            pin: true,
-            scrub: 0.8,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        });
         render(0);
 
         const relayout = () => {
@@ -323,9 +303,10 @@ export function CareerRoute() {
 
         return () => {
           ScrollTrigger.removeEventListener("refreshInit", relayout);
-          flaps.forEach((f) => f.kill());
+          walk?.kill();
+          offs.forEach((off) => off());
           tl.scrollTrigger?.kill();
-          delete el.dataset.pinned;
+          delete el.dataset.map;
         };
       });
     },
@@ -389,7 +370,7 @@ export function CareerRoute() {
           <svg className={s.traveller} data-traveller viewBox="0 0 100 100" aria-hidden="true" focusable="false">
             <path d={CIRCLE} />
           </svg>
-          <p className={s.hint} data-hint aria-hidden="true">scroll to follow the line</p>
+          <p className={s.hint} data-hint aria-hidden="true">pick a stop to read it</p>
         </div>
 
         <div className={s.readout} data-readout data-intro-item aria-hidden="true">

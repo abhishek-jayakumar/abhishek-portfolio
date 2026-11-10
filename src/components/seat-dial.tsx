@@ -42,7 +42,7 @@ export function SeatDial() {
         </svg>
       </div>
       <p className="dial-caption">
-        Each dot is an enquiry: 1,000 of them. Each row of terracotta dots is 50 seats.
+        Each dot is an enquiry: 1,000 of them. Each row of gold dots is 50 seats.
       </p>
 
       <div className="dial-control">

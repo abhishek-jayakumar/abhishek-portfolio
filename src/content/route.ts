@@ -125,7 +125,7 @@ export const ROUTE: readonly Stop[] = [
 /** Passport stamps, pressed when the traveller reaches stop `at`. Placed in percent of the map. */
 export const STAMPS = [
   { at: 0, country: "India", note: "where it started", x: 6, y: 34, mx: 80, my: 5, tilt: -8 },
-  { at: 3, country: "United Kingdom", note: "2022", x: 47, y: 14, mx: 24, my: 44, tilt: 6 },
+  { at: 3, country: "United Kingdom", note: "2022", x: 47, y: 14, mx: 20, my: 38.5, tilt: 6 },
   { at: 6, country: "India", note: "back home", x: 84, y: 64, mx: 82, my: 83, tilt: -5 },
 ] as const;
 

@@ -1,0 +1,117 @@
+/* The Lab cards on the homepage: four working tools, two by two on wide screens, one column on phones. */
+
+.cards {
+  display: grid;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 52rem) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.4rem;
+  }
+}
+
+.card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  overflow: hidden;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 1.1rem;
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: var(--lift-sm);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--lift);
+}
+.card:focus-visible {
+  outline: 3px solid var(--violet);
+  outline-offset: 3px;
+}
+
+.preview {
+  aspect-ratio: 16 / 8;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.pv_growth {
+  background: linear-gradient(180deg, #f6f2fd, #efe9fb);
+}
+.pv_paid {
+  background: linear-gradient(180deg, #fbf4ef, #f6ece4);
+}
+.pv_lifecycle {
+  background: linear-gradient(180deg, #f3f0fc, #e9e3f8);
+}
+.pv_cro {
+  background: linear-gradient(180deg, #f2f7f6, #e7f0ee);
+}
+.preview svg {
+  display: block;
+  overflow: visible;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.2rem 1.3rem 1.3rem;
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.8rem;
+  font-size: 0.74rem;
+  font-weight: 650;
+  color: #4a4560;
+}
+.no {
+  color: var(--violet);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.title {
+  font-size: clamp(1.45rem, 2.4vw, 1.85rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.short {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #3a3452;
+}
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tools li {
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--blush);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #4a4560;
+}
+.cta {
+  margin-top: auto;
+  padding-top: 0.6rem;
+  font-weight: 750;
+  color: var(--violet);
+}
+.card:hover .cta {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+}

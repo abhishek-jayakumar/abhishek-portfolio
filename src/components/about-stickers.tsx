@@ -7,7 +7,7 @@ import { gsap, useGSAP, ScrollTrigger, Draggable } from "@/lib/gsap-plugins";
 const STICKERS = [
   { text: "Based in Bengaluru", tone: "sun", left: "3%", top: "6%", rotate: -6 },
   { text: "Google Ads and Analytics certified, 2024", tone: "sage", left: "30%", top: "58%", rotate: 4 },
-  { text: "Open to remote roles", tone: "blush", left: "6%", top: "84%", rotate: -3 },
+  { text: "Open to remote roles", tone: "blush", left: "40%", top: "88%", rotate: -3 },
 ] as const;
 
 const ROUGH = "rough({strength: 1, points: 10, template: none.inOut, taper: both, randomize: true, clamp: false})";
