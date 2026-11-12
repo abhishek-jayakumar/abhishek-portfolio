@@ -31,6 +31,10 @@ export type Experiment = {
   business: { name: string; what: string; currency: "USD" | "INR" };
   tools: string[];
   cta: string;
+  /** "live" once its modules are built; until then its page explains what is coming. */
+  status: "live" | "building";
+  /** A short handwritten question for the folded panel on the homepage. */
+  hook: string;
   preview: Preview;
   howTo: string[];
   modules: LabModule[];
@@ -49,6 +53,8 @@ export const EXPERIMENTS: Experiment[] = [
     business: { name: "Northstar CRM", what: "a fictional B2B SaaS CRM for small sales teams", currency: "USD" },
     tools: ["TypeScript", "React", "Hand-built SVG charts", "Seeded synthetic data", "Rule-based insight engine"],
     cta: "Open the workbench",
+    status: "live",
+    hook: "where is growth leaking?",
     preview: "growth",
     howTo: [
       "Start on Overview for the headline numbers and how they moved.",
@@ -77,6 +83,8 @@ export const EXPERIMENTS: Experiment[] = [
     business: { name: "Northstar CRM", what: "the same fictional SaaS company's ad accounts", currency: "USD" },
     tools: ["TypeScript", "React", "CSV parsing & validation", "Diminishing-returns model", "Rule-based insight engine"],
     cta: "Open the studio",
+    status: "building",
+    hook: "where should the next dollar go?",
     preview: "paid",
     howTo: [
       "Explore the demo account straight away, or import your own CSV exports in Import.",
@@ -103,6 +111,8 @@ export const EXPERIMENTS: Experiment[] = [
     business: { name: "Kettlebloom", what: "a fictional D2C tea brand selling online in India", currency: "INR" },
     tools: ["TypeScript", "React", "RFM segmentation", "Cohort analysis", "Template-based message drafting"],
     cta: "Open the platform",
+    status: "building",
+    hook: "who is about to leave?",
     preview: "lifecycle",
     howTo: [
       "Segments groups every customer by recency, frequency and spend; click a segment to filter everything.",
@@ -129,6 +139,8 @@ export const EXPERIMENTS: Experiment[] = [
     business: { name: "Northstar CRM", what: "the fictional SaaS company's landing pages", currency: "USD" },
     tools: ["TypeScript", "React", "Two-proportion z-test", "Wilson intervals", "Sample-size planning"],
     cta: "Open the studio",
+    status: "building",
+    hook: "did the fix really work?",
     preview: "cro",
     howTo: [
       "Landing pages ranks each page; pick one to see its journey and its biggest drop-off.",

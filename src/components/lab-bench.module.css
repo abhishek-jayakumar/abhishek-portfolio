@@ -1,0 +1,418 @@
+/*
+ * The Lab bench on the homepage. Phones: an accordion, one panel open. From 64rem: four panels
+ * in a row; the open one widens (flex-grow) and the rest fold into deep-violet strips that ask
+ * their question in handwriting. The open panel's contents keep the open width while it grows,
+ * so text never reflows mid-animation; the panel simply clips them.
+ */
+
+.bench {
+  --gap: 0.7rem;
+  --grow: 3;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  container-type: inline-size;
+}
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--r);
+  background: var(--forest);
+  color: var(--cream);
+  transition:
+    background-color 0.45s ease,
+    color 0.45s ease,
+    box-shadow 0.45s ease;
+}
+.panel[data-active="true"] {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: var(--lift);
+}
+
+.head {
+  margin: 0;
+  font: inherit;
+}
+.toggle {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "no status"
+    "name name"
+    "kind kind";
+  gap: 0.3rem 1rem;
+  width: 100%;
+  padding: 1.1rem 1.2rem 1rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.panel[data-active="true"] .toggle {
+  cursor: default;
+}
+.toggle:focus-visible {
+  outline: 3px solid var(--sun);
+  outline-offset: -5px;
+  border-radius: var(--r);
+}
+.panel[data-active="true"] .toggle:focus-visible {
+  outline-color: var(--violet);
+}
+
+.no {
+  grid-area: no;
+  font-family: var(--f-head);
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--sun);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.panel[data-active="true"] .no {
+  color: #9a7428;
+}
+.status {
+  grid-area: status;
+  justify-self: end;
+  align-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.22rem 0.6rem;
+  border: 1px solid color-mix(in srgb, currentColor 45%, transparent);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+/* A real state, so it earns a dot: the experiment is built and working. */
+.live::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: #34b356;
+}
+.name {
+  grid-area: name;
+  margin-top: 0.55rem;
+  font-family: var(--f-head);
+  font-size: clamp(1.2rem, 1.4vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  hyphens: auto;
+}
+.kind {
+  grid-area: kind;
+  font-size: 0.78rem;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.hook,
+.peek {
+  display: none;
+}
+
+/* Phones: the open panel's body unfolds (0fr → 1fr rows). */
+.body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.panel[data-active="true"] .body {
+  grid-template-rows: 1fr;
+}
+.clip {
+  min-height: 0;
+  overflow: hidden;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 0.9rem 1.2rem 1.3rem;
+}
+
+/* The instrument: a sheet of graph paper with the drawing on it. */
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.instrument {
+  position: relative;
+  aspect-ratio: 560 / 250;
+  padding: 1rem 1rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--r) - 0.35rem);
+  background-color: #f8f5fe;
+  background-image: radial-gradient(color-mix(in srgb, var(--forest) 13%, transparent) 1px, transparent 1.3px);
+  background-size: 14px 14px;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  user-select: none;
+}
+.instrument:focus-visible {
+  outline: 3px solid var(--violet);
+  outline-offset: 3px;
+}
+.instrument svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  font-family: var(--f-body);
+}
+/* Phones draw the picture at about half size, so its labels grow to stay readable. */
+@media (max-width: 40rem) {
+  .instrument {
+    padding: 0.8rem 0.6rem 0.4rem;
+  }
+  .instrument svg [data-l] {
+    font-size: 20px;
+  }
+}
+.illus {
+  position: absolute;
+  top: -0.55rem;
+  right: 0.9rem;
+  padding: 0 0.4rem;
+  background: var(--white);
+  font-size: 0.68rem;
+  font-weight: 650;
+  line-height: 1;
+  color: var(--muted);
+}
+.readoutRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.readout {
+  min-height: 2.8em;
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.hint {
+  flex: none;
+  font-size: 1.3rem;
+  transform: rotate(-4deg) translateY(-0.1rem);
+}
+.hintTouch {
+  display: none;
+}
+@media (hover: none) {
+  .hintMouse {
+    display: none;
+  }
+  .hintTouch {
+    display: inline;
+  }
+}
+
+.question {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.2rem;
+}
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.72rem 1.15rem;
+  border: 1.5px solid var(--violet);
+  border-radius: 999px;
+  background: var(--violet);
+  color: #fffdf8;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.25s ease;
+}
+.cta:hover {
+  background: var(--forest);
+  border-color: var(--forest);
+}
+.cta:hover span {
+  transform: translateX(3px);
+}
+.cta span {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cta:active {
+  transform: scale(0.98);
+}
+.ctaQuiet {
+  background: transparent;
+  color: var(--violet);
+}
+.ctaQuiet:hover {
+  background: var(--blush);
+  border-color: var(--violet);
+}
+.modules {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* Wide screens: the bench. */
+@media (min-width: 64rem) {
+  .bench {
+    flex-direction: row;
+    height: clamp(34rem, 76vh, 39rem);
+  }
+  .panel {
+    flex: 1 1 0;
+    min-width: 0;
+    transition:
+      flex-grow 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.45s ease,
+      color 0.45s ease,
+      box-shadow 0.45s ease;
+  }
+  .panel[data-active="true"] {
+    flex-grow: var(--grow);
+  }
+  /* A folded strip is one big target. */
+  .panel:not([data-active="true"]) .toggle::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .panel:not([data-active="true"]):hover {
+    background: #36237f;
+  }
+  .panel:not([data-active="true"]):hover .no {
+    transform: translateY(-3px);
+  }
+  .toggle {
+    padding: 1.4rem 1.4rem 0.4rem;
+  }
+  .name {
+    width: min(100%, 10.5em);
+  }
+
+  .hook {
+    display: block;
+    position: absolute;
+    right: 1.1rem;
+    bottom: 1.2rem;
+    left: 1.4rem;
+    margin: 0;
+    font-size: 1.6rem;
+    line-height: 1.05;
+    color: var(--sun);
+    pointer-events: none;
+    transition: opacity 0.4s ease 0.25s;
+  }
+  /* What is inside a folded tool: its modules, quietly. */
+  .peek {
+    display: grid;
+    gap: 0.45rem;
+    position: absolute;
+    top: 50%;
+    left: 1.4rem;
+    right: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--cream) 62%, transparent);
+    pointer-events: none;
+    transform: translateY(-40%);
+    transition: opacity 0.4s ease 0.25s;
+  }
+  .peek li {
+    display: flex;
+    gap: 0.55rem;
+  }
+  .peek span {
+    flex: none;
+    width: 1.1rem;
+    color: var(--sun);
+  }
+  .panel[data-active="true"] .peek,
+  .panel[data-active="true"] .hook {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .body {
+    display: block;
+    flex: 1;
+    min-height: 0;
+    transition: none;
+  }
+  .clip {
+    height: 100%;
+  }
+  .content {
+    width: calc((100cqw - 3 * var(--gap)) * var(--grow) / (var(--grow) + 3));
+    height: 100%;
+    padding: 0.6rem 1.4rem 1.4rem;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.2s ease,
+      visibility 0s linear 0.2s;
+  }
+  .panel[data-active="true"] .content {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 0.45s ease 0.3s,
+      visibility 0s;
+  }
+  .stage {
+    flex: 1;
+    min-height: 0;
+  }
+  .instrument {
+    flex: 1;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+}
+@media (min-width: 82rem) {
+  .bench {
+    --grow: 3.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .body,
+  .content,
+  .hook,
+  .peek,
+  .no,
+  .cta {
+    transition: none !important;
+  }
+}

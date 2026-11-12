@@ -32,9 +32,7 @@ export default function Home() {
             to answer the questions a growth team asks every week. Each one runs on clearly labelled synthetic data, and
             every recommendation shows the numbers it rests on.
           </p>
-          <div data-reveal>
-            <Lab />
-          </div>
+          <Lab />
           <details className={direction.sessionDisclosure}>
             <summary>This visit, as a measurement experiment</summary>
             <SessionLog />
