@@ -56,8 +56,73 @@ export type Project = {
 
 const cs = (f: string) => `/img/campaigns/cscp/${f}`;
 
-/** CSCP campaign creative. Designed by Abhishek; the people in the images are AI-generated. */
+const lu = (f: string) => `/img/campaigns/levelup/${f}`;
+
+const LINK_ALTS = [
+  "Three are scams. Find the real one: four India Post links, A to D. Comment A, B, C or D, then swipe.",
+  "Case file A, scam: extra words and an odd ending. Endings like .top are bait.",
+  "Case file B, scam: the owner hides at the end. Read the link from the right.",
+  "Case file D, scam: a zero dressed as an O.",
+  "Case file C, real: only the government gets .gov.in.",
+  "Save this: read links from the right, in three steps. Clicked and paid? Call 1930.",
+  "You just did a hacker’s job. Comment LEVELUP for the CSCP syllabus on WhatsApp.",
+];
+const CONSULTANT_ALTS = [
+  "What a security consultant actually does, in four steps.",
+  "01, understand the app: how it works, who uses it, what data it holds.",
+  "02, plan the attack: a threat profile and a test plan.",
+  "03, test it like a hacker: manual and automated testing against the OWASP Top 10.",
+  "04, write the report: rate each risk, explain the fix, walk the client through it.",
+  "You practise the whole thing in CSCP. Comment LEVELUP for the syllabus.",
+];
+const BATCH_ALTS = [
+  "CSCP Batch 16: your first cyber job starts 1 Feb. 3 months, live online, taught by SecurEyes consultants.",
+  "Companies don’t hire certificates. They hire people who’ve done the work.",
+  "Taught by people who do this for a living: 8 to 18+ years in the field, certified in CEH, CISA, CISM and GPEN.",
+  "In 3 months you’ll be able to hack web, mobile and API apps, test networks like an attacker, and audit a company against ISO 27001.",
+  "Your final exam is a real job: a timed security test, a detailed report and a closure meeting with the client.",
+  "200+ trained, 170+ job offers. Four alumni who now work at SecurEyes.",
+  "Batch 16 starts Mon, 1 Feb. Early-bird fees, and comment LEVELUP for the syllabus.",
+];
+const slides = (prefix: string, alts: string[]) =>
+  alts.map((alt, i) => ({ src: lu(`${prefix}-${i + 1}.jpg`), w: 864, h: 1152, caption: `${i + 1}/${alts.length}`, alt }));
+
+/** The Batch 16 launch on the new SecurEyes Level Up Instagram page, planned and made by Abhishek. */
+const LEVELUP_CREATIVE: Gallery[] = [
+  {
+    title: "Batch 16: the film and the reels",
+    body: "A 60-second film of Kyarena, the browser-based lab where CSCP students practise, cut for the website and as a reel. Beside it, a scam-safety reel made to be shared, a tour of the lab, and an alumna telling her own story. Press play for sound.",
+    items: [
+      { src: lu("kyarena-film.jpg"), video: lu("kyarena-film.mp4"), w: 1280, h: 720, caption: "Kyarena film, 1:00", alt: "The Kyarena film: live classes, 63 hands-on labs and help when you’re stuck, all in a browser tab." },
+      { src: lu("reel-otp.jpg"), video: lu("reel-otp.mp4"), w: 540, h: 960, caption: "Reel: OTP is a house key, 0:38", alt: "Reel: would you hand a stranger the key to your house? Then don’t hand them your OTP." },
+      { src: lu("reel-lab.jpg"), video: lu("reel-lab.mp4"), w: 540, h: 960, caption: "Reel: inside the hacking lab, 0:56", alt: "Reel: this browser tab is a hacking lab. Kyarena’s 63 labs with real Kali and real targets." },
+      { src: lu("reel-kripa.jpg"), video: lu("reel-kripa.mp4"), w: 540, h: 960, caption: "Reel: Kripa’s story, 0:50", alt: "Reel: from graduate to security consultant at SecurEyes, Kripa Joshi’s CSCP story in her own words." },
+    ],
+  },
+  {
+    title: "Puzzles that earn the share",
+    body: "Scam puzzles reach people who don’t follow the page yet, because they get sent on. Readers commit to an answer in the comments before they swipe, and the last slide turns ‘you spotted it’ into ‘you could do this for a living’.",
+    items: [
+      ...slides("link", LINK_ALTS),
+      { src: lu("hacker-1.jpg"), w: 864, h: 1152, caption: "Find 5 things a hacker sees", alt: "Carousel: find 5 things a hacker sees, on a desk with a laptop, phone and boarding pass." },
+      { src: lu("job-1.jpg"), w: 864, h: 1152, caption: "Real or fake job offer?", alt: "Carousel: real or fake job offer? Three red flags circled on a work-from-home offer." },
+    ],
+  },
+  {
+    title: "Career posts that show the work",
+    body: "For people already curious about the field: what the job actually involves, step by step, and that CSCP has you practise the whole process.",
+    items: slides("consultant", CONSULTANT_ALTS),
+  },
+  {
+    title: "The offer, last",
+    body: "The Batch 16 carousel is the only hard sell in the grid. It leads with proof (working consultants as trainers, a real consulting job as the final exam, 200+ trained and 170+ job offers) before the price and the early-bird dates.",
+    items: slides("batch", BATCH_ALTS),
+  },
+];
+
+/** CSCP creative: the Batch 16 launch first, then the earlier paid campaign (whose people are AI-generated). */
 const CSCP_CREATIVE: Gallery[] = [
+  ...LEVELUP_CREATIVE,
   {
     title: "Ads, one offer in every size",
     body: "The paid campaign ran on Meta and Google, so each message was made for the square feed, stories and landscape placements, plus a 30-second film. I designed them in Canva; the people in them are AI-generated.",
@@ -164,6 +229,16 @@ export const projects: Project[] = [
         title: "What came out of it",
         body: [
           "About 1,000 leads and 50 conversions against 50 available seats. Divide one by the other and there were at least 20 enquiries for every seat, which is why quality mattered more than volume. The seats slider at the end of this page shows how the problem changes shape if the seats change.",
+        ],
+      },
+      {
+        title: "Batch 16: an audience before the ask",
+        body: [
+          "For the next batch I looked at why organic social wasn’t helping. The corporate Instagram had under 500 followers, long quiet spells, six different visual styles, mostly carousels and no faces. It was speaking to companies, while the people who join CSCP are students and early-career switchers.",
+          "So I proposed and launched a separate student page, SecurEyes Level Up, named after the programme’s existing Level Up mark. The corporate page stays for business audiences and shares the student reels as collab posts. Every post uses one template system: a bright colour per topic, a student cut-out, a bold headline, and the SecurEyes and CSCP marks on top.",
+          "The 10-post launch grid is ordered like a funnel. Scam puzzles and safety reels are built to be shared, so they reach people who don’t follow the page yet. Career posts show what a security consultant actually does. The Kyarena film and an alumna’s story give proof. Only then comes the Batch 16 offer.",
+          "Every post asks for the same small thing: comment LEVELUP and the syllabus arrives on WhatsApp. That turns a like into a conversation admissions can pick up. I paired the launch with a week-one sharing plan (staff, trainers, 15 batches of alumni, past enquiries and college placement offices, each with a message template) because a new page’s first hour decides how far Instagram pushes it.",
+          "I also audited the landing page the posts point to: expired batch dates, a five-field form with no WhatsApp option, and only the Meta Pixel for tracking. The fixes, a shorter form, a WhatsApp button, GA4, UTM-tagged links and a thank-you page to count conversions, are part of the same plan. The launch is recent, so I’m not quoting results until the numbers are in.",
         ],
       },
     ],

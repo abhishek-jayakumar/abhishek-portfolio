@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRef, type CSSProperties } from "react";
 import { gsap, useGSAP, ScrollTrigger, ScrollSmoother } from "@/lib/gsap-plugins";
 import { ALSO, WORK, type Work } from "@/content/work";
-import { POSTS } from "@/content/campaigns";
 import { Lines } from "./lines";
 import s from "./work-reel.module.css";
 
@@ -179,34 +178,50 @@ function MagazineDesk() {
   );
 }
 
-const post = (key: string) => POSTS.find((p) => p.key === key)!;
+const LU_REELS = [
+  { key: "otp", cls: s.luOtp, depth: 0.55, caption: "Reel: your OTP is a house key", alt: "Reel: your OTP is a house key. Never hand it over." },
+  { key: "lab", cls: s.luLab, depth: 0.4, caption: "Reel: inside the hacking lab", alt: "Reel: this browser tab is a hacking lab. A tour of Kyarena's 63 hands-on labs." },
+  { key: "kripa", cls: s.luKripa, depth: 0.75, caption: "Alumni story", alt: "Reel: Kripa Joshi, a CSCP alumna, on going from graduate to security consultant." },
+];
+const LU_POSTS = [
+  { key: "link", cls: s.luLink, depth: 0.6, caption: "Puzzle: find the real link", alt: "Carousel cover: three are scams, find the real one. Four India Post links to choose from." },
+  { key: "hacker", cls: s.luHacker, depth: 0.85, caption: "Puzzle: what a hacker sees", alt: "Carousel cover: find 5 things a hacker sees, on a desk with a laptop, phone and boarding pass." },
+  { key: "batch", cls: s.luBatch, depth: 0.7, caption: "The offer", alt: "Carousel cover: your first cyber job starts 1 Feb. CSCP Batch 16, 3 months live online." },
+];
+const lu = (f: string) => `/img/campaigns/levelup/${f}`;
 
-function AwarenessDesk() {
-  const reel = post("qr-swap");
+function LevelUpDesk() {
   return (
     <>
-      {[["scam-check-1", s.awA], ["case-file", s.awB], ["upi", s.awC]].map(([key, cls], i) => {
-        const p = post(key);
-        return (
-          <figure key={key} className={`${s.item} ${s.awPost} ${cls}`} data-depth={[0.3, 0.5, 0.75][i]}>
-            <div className={s.awScreen}>
-              <Image src={p.slides[0].src} alt={p.slides[0].alt} width={1080} height={1350} sizes="(min-width: 60rem) 16vw, 28vw" />
-            </div>
-            <figcaption>{p.series}</figcaption>
-          </figure>
-        );
-      })}
-      <figure className={`${s.item} ${s.awPost} ${s.awReel}`} data-depth="0.55">
-        <div className={s.awScreen}>
-          <video data-loop muted loop playsInline preload="none" poster={reel.video!.poster} aria-label={reel.slides[0].alt}>
-            <source src={reel.video!.src} type="video/mp4" />
-          </video>
-        </div>
-        <figcaption>Reel, {reel.video!.seconds}s</figcaption>
+      <figure className={`${s.item} ${s.luFilm}`} data-depth="0.2">
+        <Browser url="Kyarena: the CSCP hacking lab">
+          <div className={s.film}>
+            <video data-loop muted loop playsInline preload="none" poster={lu("kyarena-film.jpg")} aria-label="A loop from the 60-second Kyarena film: live classes and hands-on labs in the browser">
+              <source src={lu("kyarena-film.mp4")} type="video/mp4" />
+            </video>
+          </div>
+        </Browser>
+        <figcaption>The Kyarena film, 60s</figcaption>
       </figure>
-      <p className={`${s.item} ${s.awWords}`} data-depth="1">
-        Aware. Pause. Verify. <span>Report.</span>
-        <small>The people are AI-generated; names and numbers in the posts are fictional.</small>
+      {LU_REELS.map((r) => (
+        <figure key={r.key} className={`${s.item} ${r.cls}`} data-depth={r.depth}>
+          <div className={s.luPhone}>
+            <video data-loop muted loop playsInline preload="none" poster={lu(`reel-${r.key}.jpg`)} aria-label={r.alt}>
+              <source src={lu(`reel-${r.key}.mp4`)} type="video/mp4" />
+            </video>
+          </div>
+          <figcaption>{r.caption}</figcaption>
+        </figure>
+      ))}
+      {LU_POSTS.map((p) => (
+        <figure key={p.key} className={`${s.item} ${s.luPost} ${p.cls}`} data-depth={p.depth}>
+          <Image src={lu(`${p.key}-1.jpg`)} alt={p.alt} width={864} height={1152} sizes="(min-width: 60rem) 12vw, 22vw" />
+          <figcaption>{p.caption}</figcaption>
+        </figure>
+      ))}
+      <p className={`${s.item} ${s.luNote}`} data-depth="1">
+        <strong>LEVELUP</strong>
+        Every post ends here: comment it, get the syllabus on WhatsApp
       </p>
     </>
   );
@@ -217,7 +232,7 @@ const DESKS: Record<Work["key"], () => React.ReactNode> = {
   career: CareerDesk,
   burl: BurlDesk,
   magazine: MagazineDesk,
-  awareness: AwarenessDesk,
+  levelup: LevelUpDesk,
 };
 
 function Card({ w }: { w: Work }) {

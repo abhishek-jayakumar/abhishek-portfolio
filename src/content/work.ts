@@ -8,7 +8,7 @@
 export type WorkLink = { href: string; label: string; external?: boolean };
 
 export type Work = {
-  key: "sastrum" | "career" | "burl" | "magazine" | "awareness";
+  key: "sastrum" | "career" | "burl" | "magazine" | "levelup";
   /** The tab label. */
   short: string;
   client: string;
@@ -94,20 +94,21 @@ export const WORK: Work[] = [
     brand: { bg: "#0f1b3d", fg: "#f4efe4", accent: "#c9a24a" },
   },
   {
-    key: "awareness",
-    short: "Awareness",
-    client: "SecurEyes",
-    context: "Cybersecurity Awareness Month 2026, social",
-    brief: "A month of scams. One habit.",
-    body: "Seven posts for SecurEyes’ social pages, each a different way to practise the same four steps. Readers solve a case, take a quiz or count red flags, instead of being told to be careful. The quiz posts end at SecurEyes’ training.",
+    key: "levelup",
+    short: "Level Up",
+    client: "CSCP",
+    context: "Batch 16 launch, SecurEyes Level Up",
+    brief: "Earn the follow first. Then ask for the enrolment.",
+    body: "The corporate page wasn’t reaching students, so I started a student-facing Instagram, SecurEyes Level Up, with one template system. Scam puzzles get the shares and the reach, career posts and the Kyarena lab film show the work, an alumna tells her own story, and only then comes the offer. Every post ends the same way: comment LEVELUP and the syllabus arrives on WhatsApp.",
     made: [
-      "7 posts: 5 carousels and 2 reels",
-      "33 carousel slides, designed in Canva",
-      "Case files, quizzes and red-flag hunts",
-      "One line throughout: aware, pause, verify, report",
+      "The strategy: a new student page, beside the corporate one",
+      "A 10-post launch grid: 5 carousels, 5 reels",
+      "A 60-second film of the Kyarena hacking lab",
+      "Comment LEVELUP, then a WhatsApp follow-up",
+      "A launch-week sharing plan for staff, alumni and colleges",
     ],
-    links: [],
-    brand: { bg: "#0c1029", fg: "#f3efe6", accent: "#f7d117" },
+    links: [{ href: "/work/cscp", label: "See the launch, post by post" }],
+    brand: { bg: "#6fb2ff", fg: "#101828", accent: "#ff6a3d" },
   },
 ];
 
