@@ -364,7 +364,7 @@ export function WorkReel() {
     <section id="work" ref={root} className={s.section} data-section="selected-work" aria-labelledby="work-heading">
       <header className={s.head}>
         <p className={s.caption}>Selected work</p>
-        <Lines as="h2" id="work-heading">Five briefs.<br />Everything they needed.</Lines>
+        <Lines as="h2" id="work-heading">Five briefs.<br />And the work behind each.</Lines>
         <p>Each project lived inside its client’s brand, so the colours change as you scroll. Around every brief is what I actually made for it.</p>
       </header>
 
