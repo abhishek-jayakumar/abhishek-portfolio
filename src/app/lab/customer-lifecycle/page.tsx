@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageMotion } from "@/components/page-motion";
 import { getExperiment } from "@/lab/experiments";
-import { LabPlaceholder } from "@/lab/shared/ui/lab-placeholder";
+import { Platform } from "@/lab/lifecycle/ui/platform";
 import { LabShell } from "@/lab/shared/ui/lab-shell";
 
 const experiment = getExperiment("customer-lifecycle");
@@ -15,7 +15,7 @@ export default function Page() {
   return (
     <>
       <LabShell experiment={experiment}>
-        <LabPlaceholder experiment={experiment} />
+        <Platform />
       </LabShell>
       <PageMotion />
     </>

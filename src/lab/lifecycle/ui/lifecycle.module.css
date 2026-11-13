@@ -1,0 +1,198 @@
+/* Customer Lifecycle Intelligence: the few pieces the shared lab styles don't cover. */
+
+.segGrid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14.5rem), 1fr));
+}
+.segCard {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+  padding: 0.95rem 1rem 1rem;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--seg, var(--violet));
+  border-radius: 0.8rem;
+  background: var(--white);
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.segCard:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--lift-sm);
+}
+.segCard[aria-pressed="true"] {
+  background: var(--blush);
+  box-shadow: inset 0 0 0 2px var(--seg, var(--violet));
+}
+.segName {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-weight: 700;
+}
+.segCount {
+  font-family: var(--f-head);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.segMeta {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.segRule {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #4a4560;
+}
+.selected {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--violet);
+}
+
+/* ---- Journey builder ------------------------------------------------------------------------- */
+.steps {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.step {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: var(--white);
+}
+@media (min-width: 56rem) {
+  .step {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+.stepHead {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.8rem 1.2rem;
+}
+.stepTitle {
+  margin-right: auto;
+  font-weight: 700;
+}
+.stepTitle span {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.input,
+.textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  background: var(--white);
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--ink);
+}
+.input {
+  min-height: 40px;
+  padding: 0 0.75rem;
+}
+.textarea {
+  min-height: 8.5rem;
+  padding: 0.6rem 0.75rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+.input:focus-visible,
+.textarea:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 1px;
+}
+.narrow {
+  width: 6.5rem;
+}
+.stack {
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+  min-width: 0;
+}
+.preview {
+  min-width: 0;
+  padding: 0.8rem 0.9rem;
+  border-radius: 0.8rem;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.wa {
+  background: #e6f6e9;
+  border: 1px solid #bfe3c6;
+  border-top-left-radius: 0.2rem;
+}
+.mail {
+  background: #f6f3fc;
+  border: 1px solid #e0d8f3;
+}
+.mailSubject {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+.previewLabel {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.warn {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #9a3a12;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chips code {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.4rem;
+  background: var(--blush);
+  font-size: 0.78rem;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.8rem 1.2rem;
+}
+.drafts {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 56rem) {
+  .drafts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

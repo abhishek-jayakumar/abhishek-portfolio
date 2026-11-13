@@ -83,7 +83,7 @@ export const EXPERIMENTS: Experiment[] = [
     business: { name: "Northstar CRM", what: "the same fictional SaaS company's ad accounts", currency: "USD" },
     tools: ["TypeScript", "React", "CSV parsing & validation", "Diminishing-returns model", "Rule-based insight engine"],
     cta: "Open the studio",
-    status: "building",
+    status: "live",
     hook: "where should the next dollar go?",
     preview: "paid",
     howTo: [
@@ -111,7 +111,7 @@ export const EXPERIMENTS: Experiment[] = [
     business: { name: "Kettlebloom", what: "a fictional D2C tea brand selling online in India", currency: "INR" },
     tools: ["TypeScript", "React", "RFM segmentation", "Cohort analysis", "Template-based message drafting"],
     cta: "Open the platform",
-    status: "building",
+    status: "live",
     hook: "who is about to leave?",
     preview: "lifecycle",
     howTo: [
@@ -139,7 +139,7 @@ export const EXPERIMENTS: Experiment[] = [
     business: { name: "Northstar CRM", what: "the fictional SaaS company's landing pages", currency: "USD" },
     tools: ["TypeScript", "React", "Two-proportion z-test", "Wilson intervals", "Sample-size planning"],
     cta: "Open the studio",
-    status: "building",
+    status: "live",
     hook: "did the fix really work?",
     preview: "cro",
     howTo: [

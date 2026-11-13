@@ -1,0 +1,144 @@
+/* Paid Media Studio: only what the shared lab styles don't cover. */
+
+.drop {
+  display: grid;
+  gap: 0.6rem;
+  justify-items: start;
+  padding: 1.2rem;
+  border: 1.5px dashed var(--line);
+  border-radius: 0.9rem;
+  background: var(--white);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.dropOn {
+  border-color: var(--violet);
+  background: #f4f0fd;
+}
+.fileInput {
+  max-width: 100%;
+  font: inherit;
+  font-size: 0.86rem;
+}
+.fileInput::file-selector-button {
+  margin-right: 0.8rem;
+  min-height: 40px;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--violet);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  align-items: end;
+}
+.issues {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+.issues li {
+  display: grid;
+  grid-template-columns: 4.6rem 1fr;
+  gap: 0.6rem;
+  align-items: baseline;
+}
+.level {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.lv_error {
+  color: #b42323;
+}
+.lv_warning {
+  color: #8a5a00;
+}
+.lv_info {
+  color: var(--muted);
+}
+.mapGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+  gap: 0.3rem 1rem;
+  margin: 0.6rem 0 0;
+  font-size: 0.84rem;
+}
+.mapGrid div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #efeaf6;
+}
+.mapGrid dt {
+  font-weight: 650;
+}
+.mapGrid dd {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.missing {
+  color: var(--muted);
+  font-style: italic;
+}
+.source {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  flex-basis: 100%;
+  font-size: 0.84rem;
+}
+.pill {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: #efeaf9;
+  color: var(--forest);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+.pillImport {
+  composes: pill;
+  background: #fff1d6;
+}
+.group {
+  display: grid;
+  gap: 0.9rem;
+  padding: 0.9rem 0 0.2rem;
+  border-top: 1px solid #efeaf6;
+}
+.group:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.groupTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+.warn {
+  color: #8a5a00;
+  font-weight: 650;
+}

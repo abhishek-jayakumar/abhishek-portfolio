@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageMotion } from "@/components/page-motion";
 import { getExperiment } from "@/lab/experiments";
-import { LabPlaceholder } from "@/lab/shared/ui/lab-placeholder";
+import { Studio } from "@/lab/paid/ui/studio";
 import { LabShell } from "@/lab/shared/ui/lab-shell";
 
 const experiment = getExperiment("paid-media-studio");
@@ -15,7 +15,7 @@ export default function Page() {
   return (
     <>
       <LabShell experiment={experiment}>
-        <LabPlaceholder experiment={experiment} />
+        <Studio />
       </LabShell>
       <PageMotion />
     </>
