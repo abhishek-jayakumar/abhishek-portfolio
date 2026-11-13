@@ -28,10 +28,20 @@ const hand = Caveat({
   preload: false,
 });
 
+const TITLE = "Abhishek Jayakumar — Growth, demand generation & product marketing";
+const DESCRIPTION =
+  "Growth and performance marketing, demand generation, product GTM and digital experiences. Abhishek Jayakumar connects commercial thinking, creative, measurement and AI-assisted building. Based in Bengaluru.";
+const SITE = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "Abhishek Jayakumar — Growth, demand generation & product marketing",
-  description:
-    "Growth and performance marketing, demand generation, product GTM and digital experiences. Abhishek Jayakumar connects commercial thinking, creative, measurement and AI-assisted building. Based in Bengaluru.",
+  metadataBase: new URL(SITE),
+  title: TITLE,
+  description: DESCRIPTION,
+  // The image itself is app/opengraph-image.png.
+  openGraph: { type: "website", url: "/", siteName: "Abhishek Jayakumar", title: TITLE, description: DESCRIPTION },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
